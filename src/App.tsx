@@ -10,7 +10,6 @@ function App() {
         </span>
         <h2 className="text-4xl font-semibold text-gray-500">Stocktake #98</h2>
       </div>
-
       <RemainingList />
       <CountedList />
     </main>
