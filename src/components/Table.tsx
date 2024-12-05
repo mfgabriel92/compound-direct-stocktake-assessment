@@ -23,7 +23,7 @@ function Table({ title, header, className, children }: Props) {
       <div className="w-full rounded-md bg-white px-10 py-6 shadow-md">
         <table className="w-full table-auto">
           <thead>
-            <tr className="h-12 border-b-[1px] border-gray-200 text-sm text-gray-500">
+            <tr className="h-12 my-3 border-b-[1px] border-gray-200 text-sm text-gray-500">
               {renderHeader()}
             </tr>
           </thead>

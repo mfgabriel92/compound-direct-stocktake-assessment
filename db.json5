@@ -1,0 +1,45 @@
+﻿{
+  "remaining": [
+    {
+      "id": 1,
+      "stockName": "Blue/White Neo Capsule 1",
+      "currentQty": 2000
+    },
+    {
+      "id": 2,
+      "stockName": "Blue/White Neo Capsule 2",
+      "currentQty": 1000
+    },
+    {
+      "id": 3,
+      "stockName": "Blue/White Neo Capsule 3",
+      "currentQty": 3000
+    }
+  ],
+  "counted": [
+    {
+      "id": 1,
+      "stockName": "Blue/White Neo Capsule 1",
+      "previousQty": 1000,
+      "count": 1000,
+      "movement": 0,
+      "status": "done"
+    },
+    {
+      "id": 2,
+      "stockName": "Blue/White Neo Capsule 2",
+      "previousQty": 2000,
+      "count": 2000,
+      "movement": 1,
+      "status": "variance"
+    },
+    {
+      "id": 1,
+      "stockName": "Blue/White Neo Capsule 1",
+      "previousQty": 0,
+      "count": 0,
+      "movement": 0,
+      "status": "skipped"
+    }
+  ]
+}

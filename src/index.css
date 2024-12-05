@@ -27,3 +27,15 @@
   font-family: "Vazirmatn Regular", sans-serif;
   @apply bg-gray-50 p-8;
 }
+
+.counted-status.done {
+  @apply text-green-500;
+}
+
+.counted-status.variance {
+  @apply text-orange-700;
+}
+
+.counted-status.skipped {
+  @apply text-gray-400;
+}

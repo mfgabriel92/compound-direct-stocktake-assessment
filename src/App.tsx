@@ -1,7 +1,7 @@
 import { FaArrowLeft } from "react-icons/fa";
 import { RemainingListTable, CountedListTable } from "./components";
 
-function App() {
+export default function App() {
   return (
     <main className="mx-auto flex max-w-7xl flex-col py-8">
       <div className="flex items-center gap-4">
@@ -15,5 +15,3 @@ function App() {
     </main>
   );
 }
-
-export default App;
