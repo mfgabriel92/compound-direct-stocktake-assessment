@@ -15,7 +15,7 @@ export function RemainingListTable() {
     return (
       <tbody>
         {remainingList.list.map((i) => (
-          <tr className="h-12 transition-colors hover:bg-gray-50">
+          <tr key={i.id} className="h-12 transition-colors hover:bg-gray-50">
             <td className="w-[400px]">
               <a href="#" className="text-blue-500">
                 {i.stockName}

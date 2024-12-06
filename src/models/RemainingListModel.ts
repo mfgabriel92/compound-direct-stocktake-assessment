@@ -1,4 +1,5 @@
 ﻿export interface RemainingListModel {
-  stockName: string,
-  currentQty: number,
+  id: number;
+  stockName: string;
+  currentQty: number;
 }
