@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
 import { Table } from ".";
 import { remainingList } from "../stores";
+import { renderUnitOrUnitsText } from "../utils";
 
 export function RemainingListTable() {
   const header = ["stock name", "current qty", ""];
@@ -21,7 +22,7 @@ export function RemainingListTable() {
                 {i.stockName}
               </a>
             </td>
-            <td>{i.currentQty}</td>
+            <td>{renderUnitOrUnitsText(i.currentQty)}</td>
             <td>
               <span className="flex h-12 cursor-pointer items-center justify-end gap-2 text-blue-500">
                 <BiEdit className="-mt-1" />

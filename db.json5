@@ -23,23 +23,23 @@
       "previousQty": 1000,
       "count": 1000,
       "movement": 0,
-      "status": "done"
+      "skipped": false
     },
     {
       "id": 2,
       "stockName": "Blue/White Neo Capsule 2",
       "previousQty": 2000,
-      "count": 2000,
+      "count": 1000,
       "movement": 1,
-      "status": "variance"
+      "skipped": false
     },
     {
       "id": 3,
-      "stockName": "Blue/White Neo Capsule 1",
+      "stockName": "Blue/White Neo Capsule 3",
       "previousQty": 0,
       "count": 0,
       "movement": 0,
-      "status": "skipped"
+      "skipped": true
     }
   ]
 }
