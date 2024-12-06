@@ -4,7 +4,7 @@ import { BiEdit } from "react-icons/bi";
 import { Table } from ".";
 import { remainingList } from "../stores";
 import { renderUnitOrUnitsText } from "../utils";
-import { EmptyTable } from "./ui";
+import { EmptyTable, TableRow } from "./ui";
 
 export function RemainingListTable() {
   const header = ["stock name", "current qty", ""];
@@ -26,19 +26,19 @@ export function RemainingListTable() {
     return (
       <tbody>
         {remainingList.list.map((i) => (
-          <tr key={i.id} className="h-12 transition-colors hover:bg-gray-50">
-            <td className="w-[400px]">
+          <tr key={i.id} className="h-10 transition-colors hover:bg-gray-50">
+            <TableRow className="w-[400px]">
               <a href="#" className="text-blue-500">
                 {i.stockName}
               </a>
-            </td>
-            <td>{renderUnitOrUnitsText(i.currentQty)}</td>
-            <td>
-              <span className="flex h-12 cursor-pointer items-center justify-end gap-2 text-blue-500">
+            </TableRow>
+            <TableRow>{renderUnitOrUnitsText(i.currentQty)}</TableRow>
+            <TableRow>
+              <span className="flex h-11 cursor-pointer items-center justify-end gap-2 text-blue-500">
                 <BiEdit className="-mt-1" />
                 Record Count
               </span>
-            </td>
+            </TableRow>
           </tr>
         ))}
       </tbody>

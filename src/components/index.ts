@@ -1,3 +1,3 @@
 ﻿export { RemainingListTable } from "./RemainingListTable";
 export { CountedListTable } from "./CountedListTable";
-export { Table } from "./Table.tsx";
+export { Table } from "./ui/Table.tsx";

@@ -28,7 +28,7 @@ export function CountedListStatusIcon({
   return (
     <span
       className={clsx(
-        "counted-status flex h-12 items-center gap-1",
+        "counted-status flex h-11 items-center gap-1",
         status.toLowerCase(),
       )}
     >

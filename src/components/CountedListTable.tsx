@@ -2,9 +2,9 @@
 import { useEffect } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { Table } from ".";
-import { countedList, remainingList } from "../stores";
+import { countedList } from "../stores";
 import { renderUnitOrUnitsText } from "../utils";
-import { CountedListStatusIcon, EmptyTable } from "./ui";
+import { CountedListStatusIcon, EmptyTable, TableRow } from "./ui";
 
 function CountedListTable() {
   const header = [
@@ -36,18 +36,18 @@ function CountedListTable() {
         {list.map((record) => (
           <tr
             key={record.id}
-            className="h-12 transition-colors hover:bg-gray-50"
+            className="h-11 transition-colors hover:bg-gray-50"
           >
-            <td className="w-[400px]">
+            <TableRow className="w-[400px]">
               <a href="#" className="text-blue-500">
                 {record.stockName}
               </a>
-            </td>
-            <td>{renderUnitOrUnitsText(record.previousQty)}</td>
-            <td>{renderUnitOrUnitsText(record.count)}</td>
-            <td>{renderUnitOrUnitsText(record.movement)}</td>
-            <td>{<CountedListStatusIcon record={record} />}</td>
-            <td className="flex h-12 items-center justify-end">
+            </TableRow>
+            <TableRow>{renderUnitOrUnitsText(record.previousQty)}</TableRow>
+            <TableRow>{renderUnitOrUnitsText(record.count)}</TableRow>
+            <TableRow>{renderUnitOrUnitsText(record.movement)}</TableRow>
+            <TableRow>{<CountedListStatusIcon record={record} />}</TableRow>
+            <td className="flex h-11 items-center justify-end">
               <HiDotsVertical className="cursor-pointer text-gray-500 hover:text-gray-900" />
             </td>
           </tr>
@@ -62,8 +62,8 @@ function CountedListTable() {
         <Table
           title="Counted"
           header={header}
-          isLoading={remainingList.isLoading}
-          className="mt-12"
+          isLoading={countedList.isLoading}
+          className="mt-10"
         >
           {renderListOrEmptyMessage()}
         </Table>

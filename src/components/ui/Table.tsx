@@ -1,6 +1,6 @@
 ﻿import clsx from "clsx";
 import { ReactNode } from "react";
-import { Loading } from "./ui";
+import { Loading } from "./index.ts";
 
 interface Props {
   title: string;
@@ -25,7 +25,7 @@ function Table({ title, header, className, isLoading, children }: Props) {
       <div className="w-full rounded-md bg-white px-10 py-6 shadow-md">
         <table className="w-full table-auto">
           <thead>
-            <tr className="my-3 h-12 border-b-[1px] border-gray-200 text-sm text-gray-500">
+            <tr className="my-3 h-10 border-b-[1px] border-gray-200/50 text-sm text-gray-500">
               {renderHeader()}
             </tr>
           </thead>
