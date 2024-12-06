@@ -4,7 +4,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import { Table } from ".";
 import { countedList, remainingList } from "../stores";
 import { renderUnitOrUnitsText } from "../utils";
-import { CountedListStatusIcon } from "./ui";
+import { CountedListStatusIcon, EmptyTable } from "./ui";
 
 function CountedListTable() {
   const header = [
@@ -20,10 +20,20 @@ function CountedListTable() {
     countedList.getCountedList();
   }, []);
 
-  function renderList() {
+  function renderListOrEmptyMessage() {
+    const { list } = countedList;
+
+    if (!list.length) {
+      return (
+        <tbody>
+          <EmptyTable />
+        </tbody>
+      );
+    }
+
     return (
       <tbody>
-        {countedList.list.map((record) => (
+        {list.map((record) => (
           <tr
             key={record.id}
             className="h-12 transition-colors hover:bg-gray-50"
@@ -55,7 +65,7 @@ function CountedListTable() {
           isLoading={remainingList.isLoading}
           className="mt-12"
         >
-          {renderList()}
+          {renderListOrEmptyMessage()}
         </Table>
       )}
     </Observer>

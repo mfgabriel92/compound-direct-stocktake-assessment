@@ -4,6 +4,7 @@ import { BiEdit } from "react-icons/bi";
 import { Table } from ".";
 import { remainingList } from "../stores";
 import { renderUnitOrUnitsText } from "../utils";
+import { EmptyTable } from "./ui";
 
 export function RemainingListTable() {
   const header = ["stock name", "current qty", ""];
@@ -13,6 +14,15 @@ export function RemainingListTable() {
   }, []);
 
   function renderList() {
+    const { list } = remainingList;
+
+    if (!list.length) {
+      return (
+        <tbody>
+          <EmptyTable />
+        </tbody>
+      );
+    }
     return (
       <tbody>
         {remainingList.list.map((i) => (

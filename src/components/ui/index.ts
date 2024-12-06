@@ -1,2 +1,3 @@
 ﻿export { Loading } from "./Loading";
-export { CountedListStatusIcon } from "./CountedListStatusIcon.tsx";
+export { CountedListStatusIcon } from "./CountedListStatusIcon";
+export { EmptyTable } from "./EmptyTable";
