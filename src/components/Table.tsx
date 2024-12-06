@@ -1,17 +1,19 @@
 ﻿import clsx from "clsx";
 import { ReactNode } from "react";
+import { Loading } from "./ui";
 
 interface Props {
   title: string;
   header: string[];
   className?: string;
+  isLoading: boolean;
   children: ReactNode;
 }
 
-function Table({ title, header, className, children }: Props) {
+function Table({ title, header, className, isLoading, children }: Props) {
   function renderHeader() {
     return header.map((h) => (
-      <th key={h} className="text-start text-xs font-medium">
+      <th key={h} className="text-start font-medium text-xs">
         {h.toUpperCase()}
       </th>
     ));
@@ -23,11 +25,11 @@ function Table({ title, header, className, children }: Props) {
       <div className="w-full rounded-md bg-white px-10 py-6 shadow-md">
         <table className="w-full table-auto">
           <thead>
-            <tr className="h-12 my-3 border-b-[1px] border-gray-200 text-sm text-gray-500">
+            <tr className="my-3 h-12 border-b-[1px] border-gray-200 text-sm text-gray-500">
               {renderHeader()}
             </tr>
           </thead>
-          {children}
+          {isLoading ? <Loading /> : children}
         </table>
       </div>
     </div>

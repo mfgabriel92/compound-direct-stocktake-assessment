@@ -8,7 +8,6 @@ import { IoMdCheckmarkCircle } from "react-icons/io";
 import { Table } from ".";
 import { CountedListStatus } from "../models";
 import { countedList, remainingList } from "../stores";
-import { Loading } from "./ui";
 
 function CountedListTable() {
   const header = [
@@ -67,8 +66,13 @@ function CountedListTable() {
   return (
     <Observer>
       {() => (
-        <Table title="Counted" header={header} className="mt-12">
-          {remainingList.isLoading ? <Loading /> : renderList()}
+        <Table
+          title="Counted"
+          header={header}
+          isLoading={remainingList.isLoading}
+          className="mt-12"
+        >
+          {renderList()}
         </Table>
       )}
     </Observer>

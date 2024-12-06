@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
 import { Table } from ".";
 import { remainingList } from "../stores";
-import { Loading } from "./ui";
 
 export function RemainingListTable() {
   const header = ["stock name", "current qty", ""];
@@ -38,8 +37,13 @@ export function RemainingListTable() {
   return (
     <Observer>
       {() => (
-        <Table title="Remaining" header={header} className="mt-12">
-          {remainingList.isLoading ? <Loading /> : renderList()}
+        <Table
+          title="Remaining"
+          header={header}
+          isLoading={remainingList.isLoading}
+          className="mt-12"
+        >
+          {renderList()}
         </Table>
       )}
     </Observer>
