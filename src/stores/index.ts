@@ -1,2 +1,1 @@
-﻿export { remainingList } from "./RemainingListStore";
-export { countedList } from "./CountedListStore";
+﻿export { stocktakesList } from "./StocktakeStore";

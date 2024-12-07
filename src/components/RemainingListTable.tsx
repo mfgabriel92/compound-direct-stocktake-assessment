@@ -1,22 +1,29 @@
 ﻿import { toJS } from "mobx";
-import { Observer } from "mobx-react-lite";
-import { useEffect, HTMLAttributes } from "react";
+import { HTMLAttributes, useState, useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
 import { Table } from ".";
 import { useModal } from "../contexts";
-import { RemainingListModel } from "../models";
-import { remainingList } from "../stores";
+import { RemainingListModel, StocktakeModel } from "../models";
 import { renderUnitOrUnitsText } from "../utils";
 import { EmptyTable, TableRow } from "./ui";
 
-export function RemainingListTable() {
+interface RemainingListTableProps {
+  stocktakes: {
+    list: StocktakeModel[];
+    isLoading: boolean;
+  };
+}
+
+export function RemainingListTable({ stocktakes }: RemainingListTableProps) {
   const { toggleOpenClose, setData } = useModal();
+  const [remainingList, setRemainingList] = useState<StocktakeModel[]>([]);
 
   const header = ["Stock Name", "Current Qty", ""];
 
   useEffect(() => {
-    remainingList.getRemainingList();
-  }, []);
+    const list = stocktakes.list.filter((i) => i.count !== 0);
+    setRemainingList(list);
+  }, [stocktakes.list]);
 
   function handleToggleOpen(item: RemainingListModel) {
     toggleOpenClose();
@@ -24,7 +31,7 @@ export function RemainingListTable() {
   }
 
   function renderTableRows() {
-    return remainingList.list.map((remainingItem) => (
+    return remainingList.map((remainingItem) => (
       <tr
         key={remainingItem.id}
         className="h-10 transition-colors hover:bg-gray-50"
@@ -41,7 +48,7 @@ export function RemainingListTable() {
   }
 
   function renderTableBody() {
-    if (!remainingList.list.length) {
+    if (!remainingList.length) {
       return (
         <tbody>
           <EmptyTable />
@@ -53,18 +60,14 @@ export function RemainingListTable() {
   }
 
   return (
-    <Observer>
-      {() => (
-        <Table
-          title="Remaining"
-          header={header}
-          isLoading={remainingList.isLoading}
-          className="mt-12"
-        >
-          {renderTableBody()}
-        </Table>
-      )}
-    </Observer>
+    <Table
+      title="Remaining"
+      header={header}
+      isLoading={stocktakes.isLoading}
+      className="mt-12"
+    >
+      {renderTableBody()}
+    </Table>
   );
 }
 

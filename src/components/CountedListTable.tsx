@@ -1,12 +1,20 @@
-﻿import { Observer } from "mobx-react-lite";
-import { useEffect } from "react";
+﻿import { useEffect, useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { Table } from ".";
-import { countedList } from "../stores";
+import { StocktakeModel } from "../models";
 import { renderUnitOrUnitsText } from "../utils";
 import { CountedListStatusIcon, TableRow } from "./ui";
 
-function CountedListTable() {
+interface CountedListTableProps {
+  stocktakes: {
+    list: StocktakeModel[];
+    isLoading: boolean;
+  };
+}
+
+function CountedListTable({ stocktakes }: CountedListTableProps) {
+  const [countedList, setCountedList] = useState<StocktakeModel[]>([]);
+
   const header = [
     "stock name",
     "previous qty",
@@ -17,11 +25,12 @@ function CountedListTable() {
   ];
 
   useEffect(() => {
-    countedList.getCountedList();
-  }, []);
+    const list = stocktakes.list.filter((i) => i.count > 0);
+    setCountedList(list);
+  }, [stocktakes.list]);
 
   function renderTableRows() {
-    return countedList.list.map((countedItem) => (
+    return countedList.map((countedItem) => (
       <tr
         key={countedItem.id}
         className="h-11 transition-colors hover:bg-gray-50"
@@ -43,18 +52,14 @@ function CountedListTable() {
   }
 
   return (
-    <Observer>
-      {() => (
-        <Table
-          title="Counted"
-          header={header}
-          isLoading={countedList.isLoading}
-          className="mt-10"
-        >
-          {renderTableRows()}
-        </Table>
-      )}
-    </Observer>
+    <Table
+      title="Counted"
+      header={header}
+      isLoading={stocktakes.isLoading}
+      className="mt-10"
+    >
+      {renderTableRows()}
+    </Table>
   );
 }
 
