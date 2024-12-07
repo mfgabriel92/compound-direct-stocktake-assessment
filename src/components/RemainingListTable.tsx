@@ -1,9 +1,8 @@
-﻿import { toJS } from "mobx";
-import { HTMLAttributes, useState, useEffect } from "react";
+﻿import { HTMLAttributes, useState, useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
 import { Table } from ".";
 import { useModal } from "../contexts";
-import { RemainingListModel, StocktakeModel } from "../models";
+import { StocktakeModel } from "../models";
 import { renderUnitOrUnitsText } from "../utils";
 import { EmptyTable, TableRow } from "./ui";
 
@@ -25,9 +24,9 @@ export function RemainingListTable({ stocktakes }: RemainingListTableProps) {
     setRemainingList(list);
   }, [stocktakes.list]);
 
-  function handleToggleOpen(item: RemainingListModel) {
+  function handleToggleOpen(item: StocktakeModel) {
     toggleOpenClose();
-    setData(toJS(item));
+    setData(item);
   }
 
   function renderTableRows() {

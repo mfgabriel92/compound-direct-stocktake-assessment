@@ -1,19 +1,25 @@
-﻿import { Button } from "../Button";
+﻿import { useModal } from "../../../contexts";
+import { StocktakeModel } from "../../../models";
+import { Button } from "../Button";
 import { CountedListCountValuesSelect } from "../CountedListCountValuesSelect.tsx";
 import { Modal, ModalTitle, ModalContent, ModalFooter } from "./";
 
 export function PerformStockTakeModal() {
+  const { data } = useModal();
+  const stocktake = data as StocktakeModel;
+
   return (
     <Modal>
       <ModalTitle>Perform Stocktake</ModalTitle>
 
       <ModalContent>
         <p className="w-full border-b-[1px] border-gray-200/50 pb-3">
-          Blue/White Neo Capsule 1
+          {stocktake.stockName}
         </p>
         <div className="mt-4 flex w-full justify-center gap-4 text-black">
           <div className="flex flex-1 flex-col items-center gap-2">
             <input
+              value={stocktake.currentQty}
               type="number"
               className="h-[72px] w-full rounded-md border-[1px] border-gray-200/50 text-center text-4xl leading-none"
             />
@@ -21,6 +27,7 @@ export function PerformStockTakeModal() {
           </div>
           <div className="from-wite flex flex-1 flex-col items-center gap-2">
             <input
+              value={stocktake.count}
               type="number"
               className="h-[72px] w-full rounded-md border-[1px] border-gray-200/50 bg-gradient-to-b from-white to-orange-700/20 text-center text-4xl leading-none"
             />
