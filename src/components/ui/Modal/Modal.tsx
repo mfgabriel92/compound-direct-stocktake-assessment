@@ -16,7 +16,7 @@ export function Modal({ children }: PropsWithChildren) {
         initial="hidden"
         animate="visible"
         exit="exit"
-        className="fixed z-20 w-1/4 overflow-y-auto rounded-lg bg-white py-5"
+        className="fixed z-20 w-1/4 overflow-visible overflow-y-auto rounded-lg bg-white py-5"
         style={{ boxShadow: "0 0 20px 20px rgba(0, 0, 0, 3%)" }}
       >
         {children}
