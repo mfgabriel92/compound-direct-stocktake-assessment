@@ -5,10 +5,7 @@ import { selectInputVariants } from "../../../variants";
 import { Option } from "./Option.tsx";
 
 interface Props {
-  values: {
-    value: string | number;
-    label: string;
-  }[];
+  values: number[];
   type?: "text" | "number";
   className?: string;
 }
@@ -16,25 +13,25 @@ interface Props {
 export function Select({ values, type = "text", className }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [isCustomValue, setIsCustomValue] = useState(false);
-  const [value, setValue] = useState<string | number | undefined>(undefined);
+  const [value, setValue] = useState<string | number | undefined>(values[0]);
 
-  function toggle() {
+  function toggleOpenClose() {
     setIsOpen(!isOpen);
-
-    if (!isOpen) {
-      setIsCustomValue(false);
-    }
+    setIsCustomValue(isOpen);
   }
 
-  function handleCustomValue(value: string | number) {
-    setValue(value);
-    setIsCustomValue(!!value);
+  function handleCustomValueInput(value: string) {
+    const onlyNumbersRegex = /^\d*$/;
+    if (onlyNumbersRegex.test(value)) {
+      setValue(value);
+      setIsCustomValue(!!value);
+    }
   }
 
   function renderListOfValuesFromProps() {
     return values.map((v) => (
-      <Option key={v.label} onClick={() => setValue(v.value)}>
-        {v.label}
+      <Option key={v} onClick={() => setValue(v)}>
+        {`+${v}`}
       </Option>
     ));
   }
@@ -42,7 +39,7 @@ export function Select({ values, type = "text", className }: Props) {
   function renderCustomInputValue() {
     return (
       <Option key={value} onClick={() => setValue(value)}>
-        {`+ ${value}`}
+        {`+${value}`}
       </Option>
     );
   }
@@ -66,9 +63,9 @@ export function Select({ values, type = "text", className }: Props) {
         type={type}
         className="w-full"
         value={value}
-        onChange={(e) => handleCustomValue(e.target.value)}
-        onFocus={toggle}
-        onBlur={toggle}
+        onChange={(e) => handleCustomValueInput(e.target.value)}
+        onFocus={toggleOpenClose}
+        onBlur={toggleOpenClose}
       />
       <AnimatePresence>
         {isOpen && (
