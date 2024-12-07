@@ -1,10 +1,10 @@
 ﻿import clsx from "clsx";
-import { PropsWithChildren } from "react";
+import { ReactNode, HTMLAttributes } from "react";
 
-interface Props extends PropsWithChildren {
+interface Props extends HTMLAttributes<HTMLButtonElement> {
   type?: "solid" | "outline";
   className?: string;
-  onClick?: () => void;
+  children: ReactNode;
 }
 
 export function Button({
