@@ -8,9 +8,10 @@ interface Props {
   values: number[];
   type?: "text" | "number";
   className?: string;
+  onChange: (value: number) => void;
 }
 
-export function Select({ values, type = "text", className }: Props) {
+export function Select({ values, type = "text", className, onChange }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [isCustomValue, setIsCustomValue] = useState(false);
   const [value, setValue] = useState<string | number | undefined>(values[0]);
@@ -25,20 +26,26 @@ export function Select({ values, type = "text", className }: Props) {
     if (onlyNumbersRegex.test(value)) {
       setValue(value);
       setIsCustomValue(!!value);
+      onChange(Number(value));
     }
   }
 
+  function handleOptionSelect(value: number) {
+    setValue(value);
+    onChange(value);
+  }
+
   function renderListOfValuesFromProps() {
-    return values.map((v) => (
-      <Option key={v} onClick={() => setValue(v)}>
-        {`+${v}`}
+    return values.map((value) => (
+      <Option key={value} onClick={() => handleOptionSelect(value)}>
+        {`+${value}`}
       </Option>
     ));
   }
 
   function renderCustomInputValue() {
     return (
-      <Option key={value} onClick={() => setValue(value)}>
+      <Option key={value} onClick={() => handleOptionSelect(Number(value))}>
         {`+${value}`}
       </Option>
     );
