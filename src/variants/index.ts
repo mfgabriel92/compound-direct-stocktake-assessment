@@ -33,3 +33,21 @@ export const modalVariants = {
     opacity: 0,
   },
 };
+
+export const selectInputVariants = {
+  hidden: {
+    y: 0,
+    display: "none",
+    opacity: 0,
+  },
+  visible: {
+    y: 5,
+    display: "flex",
+    opacity: 1,
+  },
+  exit: {
+    y: 0,
+    display: "none",
+    opacity: 0,
+  },
+};
