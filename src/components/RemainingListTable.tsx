@@ -24,14 +24,17 @@ export function RemainingListTable() {
   }
 
   function renderTableRows() {
-    return remainingList.list.map((item) => (
-      <tr key={item.id} className="h-10 transition-colors hover:bg-gray-50">
+    return remainingList.list.map((remainingItem) => (
+      <tr
+        key={remainingItem.id}
+        className="h-10 transition-colors hover:bg-gray-50"
+      >
         <TableRow className="w-[400px] text-blue-500">
-          {item.stockName}
+          {remainingItem.stockName}
         </TableRow>
-        <TableRow>{renderUnitOrUnitsText(item.currentQty)}</TableRow>
+        <TableRow>{renderUnitOrUnitsText(remainingItem.currentQty)}</TableRow>
         <TableRow>
-          <ActionButton onClick={() => handleToggleOpen(item)} />
+          <ActionButton onClick={() => handleToggleOpen(remainingItem)} />
         </TableRow>
       </tr>
     ));

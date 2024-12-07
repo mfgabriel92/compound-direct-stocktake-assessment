@@ -21,17 +21,20 @@ function CountedListTable() {
   }, []);
 
   function renderTableRows() {
-    return countedList.list.map((record) => (
-      <tr key={record.id} className="h-11 transition-colors hover:bg-gray-50">
+    return countedList.list.map((countedItem) => (
+      <tr
+        key={countedItem.id}
+        className="h-11 transition-colors hover:bg-gray-50"
+      >
         <TableRow className="w-[400px]">
           <a href="#" className="text-blue-500">
-            {record.stockName}
+            {countedItem.stockName}
           </a>
         </TableRow>
-        <TableRow>{renderUnitOrUnitsText(record.previousQty)}</TableRow>
-        <TableRow>{renderUnitOrUnitsText(record.count)}</TableRow>
-        <TableRow>{renderUnitOrUnitsText(record.movement)}</TableRow>
-        <TableRow>{<CountedListStatusIcon record={record} />}</TableRow>
+        <TableRow>{renderUnitOrUnitsText(countedItem.previousQty)}</TableRow>
+        <TableRow>{renderUnitOrUnitsText(countedItem.count)}</TableRow>
+        <TableRow>{renderUnitOrUnitsText(countedItem.movement)}</TableRow>
+        <TableRow>{<CountedListStatusIcon record={countedItem} />}</TableRow>
         <td className="flex h-11 items-center justify-end">
           <HiDotsVertical className="cursor-pointer hover:text-gray-900" />
         </td>
