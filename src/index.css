@@ -25,7 +25,7 @@
 
 :root {
   font-family: "Vazirmatn Regular", sans-serif;
-  @apply bg-gray-50 p-8;
+  @apply bg-gray-50 p-8 text-gray-500;
 }
 
 .counted-status.done {
@@ -38,4 +38,8 @@
 
 .counted-status.skipped {
   @apply text-gray-400;
+}
+
+input, select {
+  @apply outline-blue-500 p-3;
 }

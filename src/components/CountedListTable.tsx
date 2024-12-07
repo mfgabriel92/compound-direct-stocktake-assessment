@@ -48,7 +48,7 @@ function CountedListTable() {
             <TableRow>{renderUnitOrUnitsText(record.movement)}</TableRow>
             <TableRow>{<CountedListStatusIcon record={record} />}</TableRow>
             <td className="flex h-11 items-center justify-end">
-              <HiDotsVertical className="cursor-pointer text-gray-500 hover:text-gray-900" />
+              <HiDotsVertical className="cursor-pointer hover:text-gray-900" />
             </td>
           </tr>
         ))}

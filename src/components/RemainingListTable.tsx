@@ -2,11 +2,14 @@
 import { useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
 import { Table } from ".";
+import { useModal } from "../contexts";
 import { remainingList } from "../stores";
 import { renderUnitOrUnitsText } from "../utils";
 import { EmptyTable, TableRow } from "./ui";
 
 export function RemainingListTable() {
+  const { toggle } = useModal();
+
   const header = ["stock name", "current qty", ""];
 
   useEffect(() => {
@@ -23,6 +26,7 @@ export function RemainingListTable() {
         </tbody>
       );
     }
+
     return (
       <tbody>
         {remainingList.list.map((i) => (
@@ -34,7 +38,10 @@ export function RemainingListTable() {
             </TableRow>
             <TableRow>{renderUnitOrUnitsText(i.currentQty)}</TableRow>
             <TableRow>
-              <span className="flex h-11 cursor-pointer items-center justify-end gap-2 text-blue-500">
+              <span
+                className="flex h-11 cursor-pointer items-center justify-end gap-2 text-blue-500"
+                onClick={toggle}
+              >
                 <BiEdit className="-mt-1" />
                 Record Count
               </span>
