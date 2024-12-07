@@ -1,8 +1,8 @@
 ﻿import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Option } from ".";
 import { selectInputVariants } from "../../../variants";
+import { Option } from "./Option.tsx";
 
 interface Props {
   values: {

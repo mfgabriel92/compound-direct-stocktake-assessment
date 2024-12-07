@@ -1,16 +1,8 @@
 ﻿import { Button } from "../Button";
-import { Select } from "../Input";
+import { CountedListCountValuesSelect } from "../CountedListCountValuesSelect.tsx";
 import { Modal, ModalTitle, ModalContent, ModalFooter } from "./";
 
 export function PerformStockTakeModal() {
-  const countVales = [
-    { label: "+1", value: 1 },
-    { label: "+5", value: 5 },
-    { label: "+10", value: 10 },
-    { label: "+100", value: 100 },
-    { label: "+1000", value: 1000 },
-  ];
-
   return (
     <Modal>
       <ModalTitle>Perform Stocktake</ModalTitle>
@@ -38,7 +30,7 @@ export function PerformStockTakeModal() {
 
         <div className="mt-8 flex flex-col items-center border-[1px] border-dashed border-gray-200/50 p-4 py-12">
           <div className="flex h-[72px] w-full gap-4 rounded-md text-black">
-            <Select values={countVales} type="number" className="basis-[60%]" />
+            <CountedListCountValuesSelect />
             <Button className="w-full" type="outline">
               Count
             </Button>
