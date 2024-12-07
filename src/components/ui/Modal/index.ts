@@ -2,4 +2,4 @@
 export { ModalTitle } from "./ModalTitle";
 export { ModalContent } from "./ModalContent";
 export { ModalFooter } from "./ModalFooter";
-export { PerformStockTakeModal } from "./PerformStockTakeModal";
+export { RecordCountModal } from "./RecordCountModal.tsx";

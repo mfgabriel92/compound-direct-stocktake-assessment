@@ -4,7 +4,7 @@ import { Observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { RemainingListTable, CountedListTable } from "./components";
-import { PerformStockTakeModal } from "./components/ui/Modal";
+import { RecordCountModal } from "./components/ui/Modal";
 import { useModal } from "./contexts";
 import { stocktakesList } from "./stores";
 
@@ -27,9 +27,7 @@ export default function App() {
           </div>
           <RemainingListTable stocktakes={toJS(stocktakesList)} />
           <CountedListTable stocktakes={toJS(stocktakesList)} />
-          <AnimatePresence>
-            {isOpen && <PerformStockTakeModal />}
-          </AnimatePresence>
+          <AnimatePresence>{isOpen && <RecordCountModal />}</AnimatePresence>
         </main>
       )}
     </Observer>

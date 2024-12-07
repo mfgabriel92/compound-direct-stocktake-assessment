@@ -6,7 +6,7 @@ import { Button } from "../Button";
 import { Select } from "../Input";
 import { Modal, ModalTitle, ModalContent, ModalFooter } from "./";
 
-export function PerformStockTakeModal() {
+export function RecordCountModal() {
   const { data } = useModal();
   const [currentQty, setCurrentQty] = useState<number>(0);
   const [count, setCount] = useState<number>(0);
