@@ -1,14 +1,9 @@
-﻿import clsx from "clsx";
+﻿import { PropsWithChildren } from "react";
 
-interface Props {
-  children: React.ReactNode;
-  className?: string;
-}
-
-export function TableRow({ children, className }: Props) {
+export function TableRow({ children }: PropsWithChildren) {
   return (
-    <td className={clsx("border-b-[1px] border-gray-100", className)}>
+    <tr className="h-10 border-b-[1px] border-gray-100 transition-colors last-of-type:border-none hover:bg-gray-50">
       {children}
-    </td>
+    </tr>
   );
 }

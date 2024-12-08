@@ -3,7 +3,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import { StocktakeModel } from "../models";
 import { renderUnitOrUnitsText } from "../utils";
 import { CountedListStatusIcon } from "./CountedListStatusIcon.tsx";
-import { TableRow, Table } from "./ui";
+import { Table, TableRow } from "./ui";
 
 interface CountedListTableProps {
   stocktakes: {
@@ -31,21 +31,16 @@ function CountedListTable({ stocktakes }: CountedListTableProps) {
 
   function renderTableRows() {
     return countedList.map((countedItem) => (
-      <tr
-        key={countedItem.stocktakeItemId}
-        className="h-11 transition-colors hover:bg-gray-50"
-      >
-        <TableRow className="w-[400px] text-blue-500">
-          {countedItem.name}
-        </TableRow>
-        <TableRow>{renderUnitOrUnitsText(countedItem.priorQuantity)}</TableRow>
-        <TableRow>{renderUnitOrUnitsText(countedItem.countValue)}</TableRow>
-        <TableRow>{renderUnitOrUnitsText(countedItem.movement!)}</TableRow>
-        <TableRow>{<CountedListStatusIcon record={countedItem} />}</TableRow>
+      <TableRow>
+        <td className="w-[400px] text-blue-500">{countedItem.name}</td>
+        <td>{renderUnitOrUnitsText(countedItem.priorQuantity)}</td>
+        <td>{renderUnitOrUnitsText(countedItem.countValue)}</td>
+        <td>{renderUnitOrUnitsText(countedItem.movement!)}</td>
+        <td>{<CountedListStatusIcon record={countedItem} />}</td>
         <td className="flex h-11 items-center justify-end">
           <HiDotsVertical className="cursor-pointer hover:text-gray-900" />
         </td>
-      </tr>
+      </TableRow>
     ));
   }
 

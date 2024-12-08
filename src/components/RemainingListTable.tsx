@@ -31,20 +31,13 @@ export function RemainingListTable({ stocktakes }: RemainingListTableProps) {
 
   function renderTableRows() {
     return remainingList.map((remainingItem) => (
-      <tr
-        key={remainingItem.stocktakeItemId}
-        className="h-10 transition-colors hover:bg-gray-50"
-      >
-        <TableRow className="w-[400px] text-blue-500">
-          {remainingItem.name}
-        </TableRow>
-        <TableRow>
-          {renderUnitOrUnitsText(remainingItem.currentQuantity)}
-        </TableRow>
-        <TableRow>
+      <TableRow key={remainingItem.stocktakeItemId}>
+        <td className="w-[400px] text-blue-500">{remainingItem.name}</td>
+        <td>{renderUnitOrUnitsText(remainingItem.currentQuantity)}</td>
+        <td>
           <ActionButton onClick={() => handleToggleOpen(remainingItem)} />
-        </TableRow>
-      </tr>
+        </td>
+      </TableRow>
     ));
   }
 
