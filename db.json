@@ -1,0 +1,24 @@
+{
+  "stocktakes": [
+    {
+      "stocktakeItemId": 1,
+      "stockId": 1,
+      "priorValue": 0,
+      "countValue": 0,
+      "movement": 0,
+      "movementValue": 0,
+      "currentQuantity": 1000,
+      "currentValue": 1000,
+      "priorQuantity": 0,
+      "performedByUserSub": null,
+      "performedByUserName": null,
+      "datePerformed": null,
+      "skippedByUserSub": null,
+      "skippedByUserName": null,
+      "dateSkipped": "2024-12-08T10:35:03.702Z",
+      "createdDate": "2024-12-06T12:23:00.000Z",
+      "modifiedDate": "2024-12-06T12:23:00.000Z",
+      "name": "Blue/White Neo Capsule 1"
+    }
+  ]
+}

@@ -25,25 +25,23 @@ function CountedListTable({ stocktakes }: CountedListTableProps) {
   ];
 
   useEffect(() => {
-    const list = stocktakes.list.filter(
-      (i) => i.movement! !== null && i.movement! >= 0,
-    );
+    const list = stocktakes.list.filter((i) => i.dateSkipped!);
     setCountedList(list);
   }, [stocktakes.list]);
 
   function renderTableRows() {
     return countedList.map((countedItem) => (
       <tr
-        key={countedItem.id}
+        key={countedItem.stocktakeItemId}
         className="h-11 transition-colors hover:bg-gray-50"
       >
         <TableRow className="w-[400px]">
           <a href="#" className="text-blue-500">
-            {countedItem.stockName}
+            {countedItem.name}
           </a>
         </TableRow>
-        <TableRow>{renderUnitOrUnitsText(countedItem.previousQty)}</TableRow>
-        <TableRow>{renderUnitOrUnitsText(countedItem.count)}</TableRow>
+        <TableRow>{renderUnitOrUnitsText(countedItem.priorQuantity)}</TableRow>
+        <TableRow>{renderUnitOrUnitsText(countedItem.countValue)}</TableRow>
         <TableRow>{renderUnitOrUnitsText(countedItem.movement!)}</TableRow>
         <TableRow>{<CountedListStatusIcon record={countedItem} />}</TableRow>
         <td className="flex h-11 items-center justify-end">

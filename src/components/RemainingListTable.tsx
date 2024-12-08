@@ -20,7 +20,7 @@ export function RemainingListTable({ stocktakes }: RemainingListTableProps) {
   const header = ["Stock Name", "Current Qty", ""];
 
   useEffect(() => {
-    const list = stocktakes.list.filter((i) => i.movement! === null);
+    const list = stocktakes.list.filter((i) => i.dateSkipped! === null);
     setRemainingList(list);
   }, [stocktakes.list]);
 
@@ -32,13 +32,15 @@ export function RemainingListTable({ stocktakes }: RemainingListTableProps) {
   function renderTableRows() {
     return remainingList.map((remainingItem) => (
       <tr
-        key={remainingItem.id}
+        key={remainingItem.stocktakeItemId}
         className="h-10 transition-colors hover:bg-gray-50"
       >
         <TableRow className="w-[400px] text-blue-500">
-          {remainingItem.stockName}
+          {remainingItem.name}
         </TableRow>
-        <TableRow>{renderUnitOrUnitsText(remainingItem.currentQty)}</TableRow>
+        <TableRow>
+          {renderUnitOrUnitsText(remainingItem.currentQuantity)}
+        </TableRow>
         <TableRow>
           <ActionButton onClick={() => handleToggleOpen(remainingItem)} />
         </TableRow>
