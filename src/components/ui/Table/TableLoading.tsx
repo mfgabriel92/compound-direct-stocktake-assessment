@@ -9,7 +9,7 @@
   );
 }
 
-export function Loading() {
+export function TableLoading() {
   return (
     <tbody>
       <Row />

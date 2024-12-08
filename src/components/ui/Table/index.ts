@@ -2,3 +2,4 @@
 export { EmptyTable } from "./EmptyTable";
 export { TableRow } from "./TableRow";
 export { TableBody } from "./TableBody";
+export { TableLoading } from "./TableLoading";

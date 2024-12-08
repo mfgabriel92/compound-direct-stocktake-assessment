@@ -1,7 +1,6 @@
 ﻿import clsx from "clsx";
 import { PropsWithChildren } from "react";
-import { Loading } from "../../Loading.tsx";
-import { EmptyTable } from "./EmptyTable.tsx";
+import { TableLoading, EmptyTable } from "./";
 
 interface Props extends PropsWithChildren {
   title: string;
@@ -29,7 +28,7 @@ function Table({
 
   function renderTableBody() {
     if (isLoading) {
-      return <Loading />;
+      return <TableLoading />;
     } else if (!isLoading && isEmpty) {
       return <EmptyTable />;
     } else {
