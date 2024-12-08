@@ -1,9 +1,9 @@
 ﻿export interface StocktakeModel {
-  id: number;
+  id: string;
   stockName: string;
   currentQty: number;
   previousQty: number;
   count: number;
-  movement: number;
+  movement: number | null;
   skipped: boolean;
 }

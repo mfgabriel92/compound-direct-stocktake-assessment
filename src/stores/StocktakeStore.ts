@@ -1,6 +1,7 @@
 ﻿import { makeAutoObservable } from "mobx";
 import { StocktakeModel } from "../models";
 import { fetchStocktakes } from "../services/";
+import { skipStocktake } from "../services/stocktakes";
 
 export class Stocktake {
   list: StocktakeModel[] = [];
@@ -16,6 +17,17 @@ export class Stocktake {
       this.list = stocktakesList;
       this.isLoading = false;
     });
+  }
+
+  setStocktakeAsSkipped(data: StocktakeModel): void {
+    this.isLoading = true;
+    skipStocktake(data)
+      .then(() => {
+        this.getStocktakes();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }
 

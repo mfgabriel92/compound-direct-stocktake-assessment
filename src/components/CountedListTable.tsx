@@ -3,7 +3,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import { StocktakeModel } from "../models";
 import { renderUnitOrUnitsText } from "../utils";
 import { CountedListStatusIcon } from "./CountedListStatusIcon.tsx";
-import { TableRow, Table } from "./ui";
+import { TableRow, Table, EmptyTable } from "./ui";
 
 interface CountedListTableProps {
   stocktakes: {
@@ -25,7 +25,9 @@ function CountedListTable({ stocktakes }: CountedListTableProps) {
   ];
 
   useEffect(() => {
-    const list = stocktakes.list.filter((i) => i.count > 0);
+    const list = stocktakes.list.filter(
+      (i) => i.movement! !== null && i.movement! >= 0,
+    );
     setCountedList(list);
   }, [stocktakes.list]);
 
@@ -42,13 +44,25 @@ function CountedListTable({ stocktakes }: CountedListTableProps) {
         </TableRow>
         <TableRow>{renderUnitOrUnitsText(countedItem.previousQty)}</TableRow>
         <TableRow>{renderUnitOrUnitsText(countedItem.count)}</TableRow>
-        <TableRow>{renderUnitOrUnitsText(countedItem.movement)}</TableRow>
+        <TableRow>{renderUnitOrUnitsText(countedItem.movement!)}</TableRow>
         <TableRow>{<CountedListStatusIcon record={countedItem} />}</TableRow>
         <td className="flex h-11 items-center justify-end">
           <HiDotsVertical className="cursor-pointer hover:text-gray-900" />
         </td>
       </tr>
     ));
+  }
+
+  function renderTableBody() {
+    if (!countedList.length) {
+      return (
+        <tbody>
+          <EmptyTable />
+        </tbody>
+      );
+    }
+
+    return <tbody>{renderTableRows()}</tbody>;
   }
 
   return (
@@ -58,7 +72,7 @@ function CountedListTable({ stocktakes }: CountedListTableProps) {
       isLoading={stocktakes.isLoading}
       className="mt-10"
     >
-      {renderTableRows()}
+      {renderTableBody()}
     </Table>
   );
 }

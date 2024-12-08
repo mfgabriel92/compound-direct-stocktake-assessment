@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useModal } from "../contexts";
 import { ModalType } from "../enums";
 import { StocktakeModel } from "../models";
+import { stocktakesList } from "../stores";
 import { ConfirmQuantityVarianceModal } from "./ConfirmQuantityVarianceModal.tsx";
 import { Button } from "./ui/Button";
 import { Select } from "./ui/Input";
@@ -14,6 +15,7 @@ export function RecordCountModal() {
   const [currentQty, setCurrentQty] = useState<number>(0);
   const [count, setCount] = useState<number>(0);
   const [incrementBy, setIncrementBy] = useState<number>(1);
+  const [isSkipStockableChecked, setIsStockableChecked] = useState(false);
 
   const incrementByOptions = [1, 5, 10, 100, 1000];
   const stocktake = data as StocktakeModel;
@@ -33,6 +35,19 @@ export function RecordCountModal() {
       toggleOpenClose(ModalType.ConfirmQuantityVariance);
       return;
     }
+  }
+
+  function handleSkipStockableClick() {
+    stocktakesList.setStocktakeAsSkipped(stocktake);
+    toggleOpenClose(ModalType.RecordCount);
+  }
+
+  function renderSaveOrSkipButton() {
+    if (isSkipStockableChecked) {
+      return <Button onClick={handleSkipStockableClick}>Skip Stockable</Button>;
+    }
+
+    return <Button onClick={handleSaveAndNextClick}>Save & Next</Button>;
   }
 
   return (
@@ -97,10 +112,15 @@ export function RecordCountModal() {
 
         <ModalFooter>
           <label htmlFor="skip" className="cursor-pointer">
-            <input id="skip" type="checkbox" />
+            <input
+              id="skip"
+              type="checkbox"
+              checked={isSkipStockableChecked}
+              onChange={() => setIsStockableChecked(!isSkipStockableChecked)}
+            />
             <span className="ml-2">Skip stocktake for this item</span>
           </label>
-          <Button onClick={handleSaveAndNextClick}>Save & Next</Button>
+          {renderSaveOrSkipButton()}
         </ModalFooter>
       </Modal>
 

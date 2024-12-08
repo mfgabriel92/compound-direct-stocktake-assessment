@@ -15,7 +15,6 @@ export function ModalProvider({ children }: PropsWithChildren) {
   const [data, setData] = useState({});
 
   function openModal(type: ModalType) {
-    console.log("Opening ", type);
     setOpenModals((prev) => [...prev, type]);
   }
 
