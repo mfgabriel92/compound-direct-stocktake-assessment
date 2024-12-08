@@ -1,1 +1,1 @@
-﻿export { fetchStocktakes } from "./stocktakes.ts";
+﻿export { fetchStocktakes, skipStocktake } from "./stocktakes.ts";
