@@ -62,13 +62,13 @@ export function Select({ values, type = "text", className, onChange }: Props) {
   return (
     <div
       className={clsx(
-        "relative flex rounded-md border-[1px] border-gray-200/50 leading-none",
+        "select-wrapper relative flex rounded-md border-[1px] border-gray-200/50 leading-none after:mr-4 after:mt-6 after:text-gray-200 after:content-['⌄'] has-[input:focus]:border-2 has-[input:focus]:border-blue-500",
         className,
       )}
     >
       <input
         type={type}
-        className="w-full"
+        className="my-2 mr-4 w-full border-r-[1px] border-gray-200 outline-none"
         value={value}
         onChange={(e) => handleCustomValueInput(e.target.value)}
         onFocus={toggleOpenClose}

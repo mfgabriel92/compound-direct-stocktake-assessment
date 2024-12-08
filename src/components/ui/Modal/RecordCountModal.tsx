@@ -51,8 +51,8 @@ export function RecordCountModal() {
               className={clsx(
                 "h-[72px] w-full rounded-md border-[1px] border-gray-200/50 bg-gradient-to-b from-white text-center text-4xl leading-none",
                 {
-                  "to-orange-100": !isCountEqualCurrentQuantity,
-                  "to-green-100": isCountEqualCurrentQuantity,
+                  "to-orange-100/50": !isCountEqualCurrentQuantity,
+                  "to-green-100/50": isCountEqualCurrentQuantity,
                 },
               )}
             />
