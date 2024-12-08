@@ -3,7 +3,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import { StocktakeModel } from "../models";
 import { renderUnitOrUnitsText } from "../utils";
 import { CountedListStatusIcon } from "./CountedListStatusIcon.tsx";
-import { TableRow, Table, EmptyTable } from "./ui";
+import { TableRow, Table } from "./ui";
 
 interface CountedListTableProps {
   stocktakes: {
@@ -35,10 +35,8 @@ function CountedListTable({ stocktakes }: CountedListTableProps) {
         key={countedItem.stocktakeItemId}
         className="h-11 transition-colors hover:bg-gray-50"
       >
-        <TableRow className="w-[400px]">
-          <a href="#" className="text-blue-500">
-            {countedItem.name}
-          </a>
+        <TableRow className="w-[400px] text-blue-500">
+          {countedItem.name}
         </TableRow>
         <TableRow>{renderUnitOrUnitsText(countedItem.priorQuantity)}</TableRow>
         <TableRow>{renderUnitOrUnitsText(countedItem.countValue)}</TableRow>
@@ -51,26 +49,15 @@ function CountedListTable({ stocktakes }: CountedListTableProps) {
     ));
   }
 
-  function renderTableBody() {
-    if (!countedList.length) {
-      return (
-        <tbody>
-          <EmptyTable />
-        </tbody>
-      );
-    }
-
-    return <tbody>{renderTableRows()}</tbody>;
-  }
-
   return (
     <Table
       title="Counted"
       header={header}
       isLoading={stocktakes.isLoading}
+      isEmpty={countedList.length === 0}
       className="mt-10"
     >
-      {renderTableBody()}
+      {renderTableRows()}
     </Table>
   );
 }

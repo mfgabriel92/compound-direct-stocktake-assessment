@@ -1,9 +1,9 @@
-﻿function Row({ opacity }: { opacity: number }) {
+﻿function Row() {
   return (
     <tr>
       <td
         colSpan={5}
-        className={`h-10 animate-pulse border-4 border-white bg-gray-100/${opacity}`}
+        className="h-10 animate-pulse border-4 border-white bg-gray-100/70"
       ></td>
     </tr>
   );
@@ -12,10 +12,9 @@
 export function Loading() {
   return (
     <tbody>
-      <Row opacity={70} />
-      <Row opacity={30} />
-      <Row opacity={70} />
-      <Row opacity={30} />
+      <Row />
+      <Row />
+      <Row />
     </tbody>
   );
 }
