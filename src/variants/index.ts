@@ -51,3 +51,18 @@ export const selectInputVariants = {
     opacity: 0,
   },
 };
+
+export const tableRowVariants = {
+  hidden: {
+    y: 1.5,
+    opacity: 0,
+  },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.3,
+      staggerChildren: 0.1,
+    },
+  },
+};

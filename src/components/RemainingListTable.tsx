@@ -4,7 +4,7 @@ import { useModal } from "../contexts";
 import { ModalType } from "../enums";
 import { StocktakeModel } from "../models";
 import { renderUnitOrUnitsText } from "../utils";
-import { Table, TableRow } from "./ui";
+import { Table, TableRow, TableBody } from "./ui";
 
 interface RemainingListTableProps {
   stocktakes: {
@@ -49,7 +49,7 @@ export function RemainingListTable({ stocktakes }: RemainingListTableProps) {
       isEmpty={!remainingList || remainingList.length === 0}
       className="mt-12"
     >
-      <tbody>{renderTableRows()}</tbody>
+      <TableBody>{renderTableRows()}</TableBody>
     </Table>
   );
 }

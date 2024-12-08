@@ -2,13 +2,14 @@
 import { PropsWithChildren } from "react";
 import { tableRowVariants } from "../../../variants";
 
-export function TableRow({ children }: PropsWithChildren) {
+export function TableBody({ children }: PropsWithChildren) {
   return (
-    <motion.tr
+    <motion.tbody
       variants={tableRowVariants}
-      className="h-10 border-b-[1px] border-gray-100 transition-colors last-of-type:border-none hover:bg-gray-50"
+      initial="hidden"
+      animate="visible"
     >
       {children}
-    </motion.tr>
+    </motion.tbody>
   );
 }

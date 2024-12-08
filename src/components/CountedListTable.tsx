@@ -3,7 +3,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import { StocktakeModel } from "../models";
 import { renderUnitOrUnitsText } from "../utils";
 import { CountedListStatusIcon } from "./CountedListStatusIcon.tsx";
-import { Table, TableRow } from "./ui";
+import { Table, TableRow, TableBody } from "./ui";
 
 interface CountedListTableProps {
   stocktakes: {
@@ -52,7 +52,7 @@ function CountedListTable({ stocktakes }: CountedListTableProps) {
       isEmpty={countedList.length === 0}
       className="mt-10"
     >
-      {renderTableRows()}
+      <TableBody>{renderTableRows()}</TableBody>
     </Table>
   );
 }
