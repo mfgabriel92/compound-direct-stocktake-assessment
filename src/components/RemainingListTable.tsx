@@ -1,6 +1,7 @@
 ﻿import { HTMLAttributes, useState, useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
 import { useModal } from "../contexts";
+import { ModalType } from "../enums";
 import { StocktakeModel } from "../models";
 import { renderUnitOrUnitsText } from "../utils";
 import { Table, EmptyTable, TableRow } from "./ui";
@@ -24,7 +25,7 @@ export function RemainingListTable({ stocktakes }: RemainingListTableProps) {
   }, [stocktakes.list]);
 
   function handleToggleOpen(item: StocktakeModel) {
-    toggleOpenClose();
+    toggleOpenClose(ModalType.RecordCount);
     setData(item);
   }
 

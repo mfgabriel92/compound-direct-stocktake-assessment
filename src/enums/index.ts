@@ -1,0 +1,1 @@
+﻿export { ModalType } from "./modalType";

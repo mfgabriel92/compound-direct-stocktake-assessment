@@ -2,7 +2,7 @@
 import { ReactNode, HTMLAttributes } from "react";
 
 interface Props extends HTMLAttributes<HTMLButtonElement> {
-  type?: "solid" | "outline";
+  type?: "solid" | "outline" | "ghost";
   className?: string;
   children: ReactNode;
 }
@@ -22,6 +22,10 @@ export function Button({
     case "outline":
       typeClassName =
         "border-[1px] border-blue-500 text-blue-500  hover:bg-blue-500 hover:text-white";
+      break;
+    case "ghost":
+      typeClassName =
+        "border-[1px] border-gray-500 text-gray-500  hover:bg-gray-100";
       break;
   }
 

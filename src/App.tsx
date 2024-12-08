@@ -6,6 +6,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { RemainingListTable, CountedListTable } from "./components";
 import { RecordCountModal } from "./components/ui/Modal";
 import { useModal } from "./contexts";
+import { ModalType } from "./enums";
 import { stocktakesList } from "./stores";
 
 export default function App() {
@@ -27,7 +28,9 @@ export default function App() {
           </div>
           <RemainingListTable stocktakes={toJS(stocktakesList)} />
           <CountedListTable stocktakes={toJS(stocktakesList)} />
-          <AnimatePresence>{isOpen && <RecordCountModal />}</AnimatePresence>
+          <AnimatePresence>
+            {isOpen(ModalType.RecordCount) && <RecordCountModal />}
+          </AnimatePresence>
         </main>
       )}
     </Observer>
