@@ -4,7 +4,7 @@ import { useModal } from "../contexts";
 import { ModalType } from "../enums";
 import { StocktakeModel } from "../models";
 import { renderUnitOrUnitsText } from "../utils";
-import { Table, TableRow, TableBody } from "./ui";
+import { Table, TableRow, TableBody } from "./ui/Table";
 
 interface RemainingListTableProps {
   stocktakes: {

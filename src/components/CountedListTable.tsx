@@ -3,7 +3,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import { StocktakeModel } from "../models";
 import { renderUnitOrUnitsText } from "../utils";
 import { CountedListStatusIcon } from "./CountedListStatusIcon.tsx";
-import { Table, TableRow, TableBody } from "./ui";
+import { Table, TableRow, TableBody } from "./ui/Table";
 
 interface CountedListTableProps {
   stocktakes: {
