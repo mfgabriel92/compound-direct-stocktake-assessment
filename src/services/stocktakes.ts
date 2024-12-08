@@ -8,16 +8,11 @@ export async function fetchStocktakes(): Promise<StocktakeModel[]> {
   return response;
 }
 
-export async function skipStocktake(
-  data: StocktakeModel,
+export async function updateStocktake(
+  body: StocktakeModel,
 ): Promise<StocktakeModel> {
-  const { data: response } = await axios.put(`${url}/${data.stocktakeItemId}`, {
-    ...data,
-    priorQuantity: 0,
-    countValue: 0,
-    movement: 0,
-    dateSkipped: new Date(),
-  } satisfies StocktakeModel);
-
+  const { data: response } = await axios.put(`${url}/${body.stocktakeItemId}`, {
+    ...body,
+  });
   return response;
 }

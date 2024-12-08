@@ -3,7 +3,11 @@ import { ModalType } from "../enums";
 import { Button } from "./ui/Button";
 import { Modal, ModalTitle, ModalContent, ModalFooter } from "./ui/Modal";
 
-export function ConfirmQuantityVarianceModal() {
+interface Props {
+  onConfirm: () => void;
+}
+
+export function ConfirmQuantityVarianceModal({ onConfirm }: Props) {
   const { toggleOpenClose } = useModal();
 
   return (
@@ -27,7 +31,7 @@ export function ConfirmQuantityVarianceModal() {
           >
             Cancel
           </Button>
-          <Button onClick={() => {}}>Confirm</Button>
+          <Button onClick={onConfirm}>Confirm</Button>
         </div>
       </ModalFooter>
     </Modal>

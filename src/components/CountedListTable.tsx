@@ -25,7 +25,9 @@ function CountedListTable({ stocktakes }: CountedListTableProps) {
   ];
 
   useEffect(() => {
-    const list = stocktakes.list.filter((i) => i.dateSkipped!);
+    const list = stocktakes.list.filter((i) => {
+      return !!i.countValue;
+    });
     setCountedList(list);
   }, [stocktakes.list]);
 

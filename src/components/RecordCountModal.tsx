@@ -28,6 +28,7 @@ export function RecordCountModal() {
 
   function handleCountClick() {
     setCountValue((prev) => prev + incrementBy);
+    setIncrementBy(1);
   }
 
   function handleSaveAndNextClick() {
@@ -35,10 +36,24 @@ export function RecordCountModal() {
       toggleOpenClose(ModalType.ConfirmQuantityVariance);
       return;
     }
+
+    updateStocktakeCount();
+  }
+
+  function updateStocktakeCount() {
+    const body = {
+      ...stocktake,
+      countValue,
+      priorQuantity: currentQuantity,
+      movement: countValue - currentQuantity,
+      modifiedDate: new Date(),
+    } as StocktakeModel;
+    stocktakesList.updateStocktakeCount(body);
+    toggleOpenClose(ModalType.RecordCount);
   }
 
   function handleSkipStockableClick() {
-    stocktakesList.setStocktakeAsSkipped(stocktake);
+    stocktakesList.updateStocktakeAsSkipped(stocktake);
     toggleOpenClose(ModalType.RecordCount);
   }
 
@@ -126,7 +141,7 @@ export function RecordCountModal() {
 
       <AnimatePresence>
         {isOpen(ModalType.ConfirmQuantityVariance) && (
-          <ConfirmQuantityVarianceModal />
+          <ConfirmQuantityVarianceModal onConfirm={updateStocktakeCount} />
         )}
       </AnimatePresence>
     </>

@@ -20,7 +20,9 @@ export function RemainingListTable({ stocktakes }: RemainingListTableProps) {
   const header = ["Stock Name", "Current Qty", ""];
 
   useEffect(() => {
-    const list = stocktakes.list.filter((i) => i.dateSkipped! === null);
+    const list = stocktakes.list.filter((i) => {
+      return !i.countValue;
+    });
     setRemainingList(list);
   }, [stocktakes.list]);
 
