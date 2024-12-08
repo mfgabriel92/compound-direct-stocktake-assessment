@@ -8,12 +8,12 @@ export function CountedListStatusIcon({ record }: { record: StocktakeModel }) {
   let icon;
   let status;
 
-  const { previousQty, count, skipped } = record;
+  const { priorQuantity, countValue, dateSkipped } = record;
 
-  if (skipped) {
+  if (dateSkipped) {
     icon = <HiChevronDoubleRight className="-mt-1" />;
     status = "Skipped";
-  } else if (count === previousQty) {
+  } else if (countValue === priorQuantity) {
     icon = <IoMdCheckmarkCircle className="-mt-1" />;
     status = "Done";
   } else {

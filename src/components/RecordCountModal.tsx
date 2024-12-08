@@ -12,22 +12,22 @@ import { Modal, ModalTitle, ModalContent, ModalFooter } from "./ui/Modal";
 
 export function RecordCountModal() {
   const { isOpen, data, toggleOpenClose } = useModal();
-  const [currentQty, setCurrentQty] = useState<number>(0);
-  const [count, setCount] = useState<number>(0);
+  const [currentQuantity, setCurrentQty] = useState<number>(0);
+  const [countValue, setCountValue] = useState<number>(0);
   const [incrementBy, setIncrementBy] = useState<number>(1);
   const [isSkipStockableChecked, setIsStockableChecked] = useState(false);
 
   const incrementByOptions = [1, 5, 10, 100, 1000];
   const stocktake = data as StocktakeModel;
-  const isCountEqualCurrentQuantity = count === currentQty;
+  const isCountEqualCurrentQuantity = countValue === currentQuantity;
 
   useEffect(() => {
-    setCurrentQty(stocktake.currentQty);
-    setCount(stocktake.count);
-  }, [stocktake.currentQty, stocktake.count]);
+    setCurrentQty(stocktake.currentQuantity);
+    setCountValue(stocktake.countValue);
+  }, [stocktake.currentQuantity, stocktake.countValue]);
 
   function handleCountClick() {
-    setCount((prev) => prev + incrementBy);
+    setCountValue((prev) => prev + incrementBy);
   }
 
   function handleSaveAndNextClick() {
@@ -59,12 +59,12 @@ export function RecordCountModal() {
 
         <ModalContent>
           <p className="w-full border-b-[1px] border-gray-200/50 pb-3">
-            {stocktake.stockName}
+            {stocktake.name}
           </p>
           <div className="mt-4 flex w-full justify-center gap-4 text-black">
             <div className="flex flex-1 flex-col items-center gap-2">
               <input
-                value={currentQty}
+                value={currentQuantity}
                 type="number"
                 onChange={(e) => setCurrentQty(Number(e.target.value))}
                 className="h-[72px] w-full rounded-md border-[1px] border-gray-200/50 text-center text-4xl leading-none"
@@ -73,9 +73,9 @@ export function RecordCountModal() {
             </div>
             <div className="from-wite flex flex-1 flex-col items-center gap-2">
               <input
-                value={count}
+                value={countValue}
                 type="number"
-                onChange={(e) => setCount(Number(e.target.value))}
+                onChange={(e) => setCountValue(Number(e.target.value))}
                 className={clsx(
                   "h-[72px] w-full rounded-md border-[1px] border-gray-200/50 bg-gradient-to-b from-white text-center text-4xl leading-none",
                   {
