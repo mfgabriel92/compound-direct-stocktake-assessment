@@ -1,3 +1,4 @@
 ﻿export { RemainingListTable } from "./RemainingListTable";
 export { CountedListTable } from "./CountedListTable";
-export { Table } from "./ui/Table/Table.tsx";
+export { Loading } from "./Loading";
+export { CountedListStatusIcon } from "./CountedListStatusIcon";

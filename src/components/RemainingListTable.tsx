@@ -1,10 +1,9 @@
 ﻿import { HTMLAttributes, useState, useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
-import { Table } from ".";
 import { useModal } from "../contexts";
 import { StocktakeModel } from "../models";
 import { renderUnitOrUnitsText } from "../utils";
-import { EmptyTable, TableRow } from "./ui";
+import { Table, EmptyTable, TableRow } from "./ui";
 
 interface RemainingListTableProps {
   stocktakes: {

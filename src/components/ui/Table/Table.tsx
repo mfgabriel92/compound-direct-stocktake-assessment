@@ -1,6 +1,6 @@
 ﻿import clsx from "clsx";
 import { ReactNode } from "react";
-import { Loading } from "../index.ts";
+import { Loading } from "../../Loading.tsx";
 
 interface Props {
   title: string;

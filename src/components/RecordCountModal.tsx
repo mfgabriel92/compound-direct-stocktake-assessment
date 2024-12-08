@@ -1,10 +1,10 @@
 ﻿import clsx from "clsx";
 import { useState, useEffect } from "react";
-import { useModal } from "../../../contexts";
-import { StocktakeModel } from "../../../models";
-import { Button } from "../Button";
-import { Select } from "../Input";
-import { Modal, ModalTitle, ModalContent, ModalFooter } from "./";
+import { useModal } from "../contexts";
+import { StocktakeModel } from "../models";
+import { Button } from "./ui/Button";
+import { Select } from "./ui/Input";
+import { Modal, ModalTitle, ModalContent, ModalFooter } from "./ui/Modal";
 
 export function RecordCountModal() {
   const { data } = useModal();

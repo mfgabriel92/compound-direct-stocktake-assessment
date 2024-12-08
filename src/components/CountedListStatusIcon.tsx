@@ -2,13 +2,9 @@
 import { HiChevronDoubleRight } from "react-icons/hi";
 import { HiExclamationTriangle } from "react-icons/hi2";
 import { IoMdCheckmarkCircle } from "react-icons/io";
-import { CountedListModel } from "../../models";
+import { StocktakeModel } from "../models";
 
-export function CountedListStatusIcon({
-  record,
-}: {
-  record: CountedListModel;
-}) {
+export function CountedListStatusIcon({ record }: { record: StocktakeModel }) {
   let icon;
   let status;
 

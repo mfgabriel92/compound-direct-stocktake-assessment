@@ -1,9 +1,9 @@
 ﻿import { useEffect, useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
-import { Table } from ".";
 import { StocktakeModel } from "../models";
 import { renderUnitOrUnitsText } from "../utils";
-import { CountedListStatusIcon, TableRow } from "./ui";
+import { CountedListStatusIcon } from "./CountedListStatusIcon.tsx";
+import { TableRow, Table } from "./ui";
 
 interface CountedListTableProps {
   stocktakes: {
