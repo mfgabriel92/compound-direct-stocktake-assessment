@@ -5,6 +5,7 @@ import { useModal } from "../contexts";
 import { ModalType } from "../enums";
 import { StocktakeModel } from "../models";
 import { stocktakesList } from "../stores";
+import { showErrorToast, showSuccessToast } from "../utils";
 import { ConfirmQuantityVarianceModal } from "./ConfirmQuantityVarianceModal.tsx";
 import { Button } from "./ui/Button";
 import { Select } from "./ui/Input";
@@ -49,7 +50,12 @@ export function RecordCountModal() {
       modifiedDate: new Date(),
     } as StocktakeModel;
     stocktakesList.updateStocktakeCount(body);
-    toggleOpenClose(ModalType.RecordCount);
+
+    if (stocktakesList.error) {
+      return showErrorToast(stocktakesList.error.message);
+    }
+
+    showSuccessToast(`${stocktake.name} sucessfully counted`);
   }
 
   function handleSkipStockableClick() {

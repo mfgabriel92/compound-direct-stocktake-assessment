@@ -5,6 +5,7 @@ import { fetchStocktakes, updateStocktake } from "../services/";
 export class Stocktake {
   list: StocktakeModel[] = [];
   isLoading = false;
+  error: Error | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -34,14 +35,17 @@ export class Stocktake {
   }
 
   private performUpdate(body: StocktakeModel): void {
-    console.log(body);
-    updateStocktake(body).then((response: StocktakeModel) => {
-      const i = this.list.findIndex(
-        (i) => i.stocktakeItemId === body.stocktakeItemId,
-      );
-      this.list[i] = response;
-      this.isLoading = false;
-    });
+    updateStocktake(body)
+      .then((response: StocktakeModel) => {
+        const i = this.list.findIndex(
+          (i) => i.stocktakeItemId === body.stocktakeItemId,
+        );
+        this.list[i] = response;
+      })
+      .catch((error: Error) => {
+        this.error = error;
+      })
+      .finally(() => (this.isLoading = false));
   }
 }
 

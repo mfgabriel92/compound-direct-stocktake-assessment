@@ -33,7 +33,7 @@ function CountedListTable({ stocktakes }: CountedListTableProps) {
 
   function renderTableRows() {
     return countedList.map((countedItem) => (
-      <TableRow>
+      <TableRow key={countedItem.stocktakeItemId}>
         <td className="w-[400px] text-blue-500">{countedItem.name}</td>
         <td>{renderUnitOrUnitsText(countedItem.priorQuantity)}</td>
         <td>{renderUnitOrUnitsText(countedItem.countValue)}</td>
