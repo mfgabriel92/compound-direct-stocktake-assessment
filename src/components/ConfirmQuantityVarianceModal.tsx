@@ -10,13 +10,18 @@ interface Props {
 export function ConfirmQuantityVarianceModal({ onConfirm }: Props) {
   const { toggleOpenClose } = useModal();
 
+  function toggleModal() {
+    toggleOpenClose(ModalType.ConfirmQuantityVariance);
+  }
+
+  function handleOnConfirmClick() {
+    onConfirm();
+    toggleModal();
+  }
+
   return (
     <Modal className="w-[23%]">
-      <ModalTitle
-        closeModal={() => toggleOpenClose(ModalType.ConfirmQuantityVariance)}
-      >
-        Quantity Variance
-      </ModalTitle>
+      <ModalTitle closeModal={toggleModal}>Quantity Variance</ModalTitle>
       <ModalContent>
         <p>
           Count does not match with stock on hand record. Do you still want to
@@ -25,13 +30,10 @@ export function ConfirmQuantityVarianceModal({ onConfirm }: Props) {
       </ModalContent>
       <ModalFooter>
         <div className="flex flex-1 justify-end gap-2">
-          <Button
-            type="ghost"
-            onClick={() => toggleOpenClose(ModalType.ConfirmQuantityVariance)}
-          >
+          <Button type="ghost" onClick={toggleModal}>
             Cancel
           </Button>
-          <Button onClick={onConfirm}>Confirm</Button>
+          <Button onClick={handleOnConfirmClick}>Confirm</Button>
         </div>
       </ModalFooter>
     </Modal>

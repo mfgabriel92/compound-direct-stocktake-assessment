@@ -49,42 +49,49 @@ export function RecordCountModal() {
     }
 
     handleUpdateStocktakeItemCount();
-    getNextStocktakeItemToEdit();
-  }
-
-  function getNextStocktakeItemToEdit() {
-    const currentIndex = remainingStocktakeItems.list.findIndex(
-      (i) => i.stocktakeItemId === stocktakeItem.stocktakeItemId,
-    );
-    const nextStocktakeItem = toJS(
-      remainingStocktakeItems.list[currentIndex + 1],
-    );
-
-    if (nextStocktakeItem) {
-      setCountValue(0);
-      return setStocktakeItem(nextStocktakeItem);
-    }
-
-    toggleOpenClose(ModalType.RecordCount);
-    showSuccessToast("All remaining stocktake items have been counted");
   }
 
   function handleUpdateStocktakeItemCount() {
     const body = {
       ...stocktakeItem,
-      countValue,
+      countValue: countValue || 0,
       priorQuantity: currentQuantity,
       movement: countValue - currentQuantity,
       modifiedDate: new Date(),
     } as StocktakeModel;
 
     updateStocktakeItemCount(body);
-
     if (remainingStocktakeItems.error) {
       return showErrorToast(remainingStocktakeItems.error.message);
     }
 
     showSuccessToast(`${stocktakeItem.name} successfully counted`);
+    getNextStocktakeItemToEdit();
+  }
+
+  function getNextStocktakeItemToEdit() {
+    const { list } = remainingStocktakeItems;
+    const currentIndex = list.findIndex(
+      (i: StocktakeModel) =>
+        i.stocktakeItemId === stocktakeItem.stocktakeItemId,
+    );
+    const isListNotEmpty = list.length > 0;
+    const nextStocktakeItem = list[currentIndex + 1];
+
+    setCountValue(0);
+
+    if (isListNotEmpty) {
+      if (nextStocktakeItem) {
+        setStocktakeItem(nextStocktakeItem);
+        return;
+      } else if (list.length > 0) {
+        setStocktakeItem(list[0]);
+        return;
+      }
+    }
+
+    toggleOpenClose(ModalType.RecordCount);
+    showSuccessToast("All remaining stocktake items have been counted");
   }
 
   function handleSkipStocktakeItem() {

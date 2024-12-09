@@ -27,7 +27,7 @@ export function StocktakeProvider({ children }: PropsWithChildren) {
 
   function filterUncountedStocktakeItems() {
     return {
-      list: stocktakesList.list.filter((i) => i.countValue === null),
+      list: stocktakesList.uncountedStocktakeList,
       isLoading: stocktakesList.isLoading,
       error: stocktakesList.error,
     } satisfies Stocktake;
@@ -35,7 +35,7 @@ export function StocktakeProvider({ children }: PropsWithChildren) {
 
   function filterCountedStocktakeItems() {
     return {
-      list: stocktakesList.list.filter((i) => i.countValue !== null),
+      list: stocktakesList.countedStocktakeList,
       isLoading: stocktakesList.isLoading,
       error: stocktakesList.error,
     } satisfies Stocktake;

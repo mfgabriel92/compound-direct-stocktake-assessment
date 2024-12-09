@@ -11,6 +11,14 @@ export class StocktakeStore {
     makeAutoObservable(this);
   }
 
+  get uncountedStocktakeList() {
+    return this.list.filter((i: StocktakeModel) => i.countValue === null);
+  }
+
+  get countedStocktakeList() {
+    return this.list.filter((i: StocktakeModel) => i.countValue !== null);
+  }
+
   getStocktakes(): void {
     this.isLoading = true;
     fetchStocktakes().then((stocktakesList) => {
