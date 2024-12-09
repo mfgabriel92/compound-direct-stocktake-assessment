@@ -1,19 +1,11 @@
-﻿import { useEffect, useState } from "react";
-import { HiDotsVertical } from "react-icons/hi";
-import { StocktakeModel } from "../models";
+﻿import { HiDotsVertical } from "react-icons/hi";
+import { useStocktake } from "../contexts";
 import { renderUnitOrUnitsText } from "../utils";
 import { CountedListStatusIcon } from "./CountedListStatusIcon.tsx";
 import { Table, TableRow, TableBody } from "./ui/Table";
 
-interface CountedListTableProps {
-  stocktakes: {
-    list: StocktakeModel[];
-    isLoading: boolean;
-  };
-}
-
-function CountedListTable({ stocktakes }: CountedListTableProps) {
-  const [countedList, setCountedList] = useState<StocktakeModel[]>([]);
+function CountedListTable() {
+  const { countedItems } = useStocktake();
 
   const header = [
     "stock name",
@@ -24,15 +16,8 @@ function CountedListTable({ stocktakes }: CountedListTableProps) {
     "",
   ];
 
-  useEffect(() => {
-    const list = stocktakes.list.filter((i) => {
-      return !!i.countValue;
-    });
-    setCountedList(list);
-  }, [stocktakes.list]);
-
   function renderTableRows() {
-    return countedList.map((countedItem) => (
+    return countedItems.list.map((countedItem) => (
       <TableRow key={countedItem.stocktakeItemId}>
         <td className="w-[400px] text-blue-500">{countedItem.name}</td>
         <td>{renderUnitOrUnitsText(countedItem.priorQuantity)}</td>
@@ -50,8 +35,8 @@ function CountedListTable({ stocktakes }: CountedListTableProps) {
     <Table
       title="Counted"
       header={header}
-      isLoading={stocktakes.isLoading}
-      isEmpty={countedList.length === 0}
+      isLoading={countedItems.isLoading}
+      isEmpty={countedItems.list.length === 0}
       className="mt-10"
     >
       <TableBody>{renderTableRows()}</TableBody>

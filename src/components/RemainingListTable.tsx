@@ -1,43 +1,37 @@
-﻿import { HTMLAttributes, useState, useEffect } from "react";
+﻿import { HTMLAttributes } from "react";
 import { BiEdit } from "react-icons/bi";
-import { useModal } from "../contexts";
+import { useModal, useStocktake } from "../contexts";
 import { ModalType } from "../enums";
 import { StocktakeModel } from "../models";
 import { renderUnitOrUnitsText } from "../utils";
 import { Table, TableRow, TableBody } from "./ui/Table";
 
-interface RemainingListTableProps {
-  stocktakes: {
-    list: StocktakeModel[];
-    isLoading: boolean;
-  };
-}
-
-export function RemainingListTable({ stocktakes }: RemainingListTableProps) {
-  const { toggleOpenClose, setData } = useModal();
-  const [remainingList, setRemainingList] = useState<StocktakeModel[]>([]);
+export function RemainingListTable() {
+  const { toggleOpenClose, setModalData } = useModal();
+  const { remainingItems } = useStocktake();
 
   const header = ["Stock Name", "Current Qty", ""];
 
-  useEffect(() => {
-    const list = stocktakes.list.filter((i) => {
-      return !i.countValue;
-    });
-    setRemainingList(list);
-  }, [stocktakes.list]);
-
-  function handleToggleOpen(item: StocktakeModel) {
+  function openAndPopulateModal(item: StocktakeModel) {
     toggleOpenClose(ModalType.RecordCount);
-    setData(item);
+    setItemBeingEdited(item);
+  }
+
+  function setItemBeingEdited(item: StocktakeModel) {
+    const itemIndex = remainingItems.list.findIndex(
+      (i) => i.stocktakeItemId === item.stocktakeItemId,
+    );
+
+    setModalData(remainingItems.list[itemIndex]);
   }
 
   function renderTableRows() {
-    return remainingList.map((remainingItem) => (
+    return remainingItems.list.map((remainingItem) => (
       <TableRow key={remainingItem.stocktakeItemId}>
         <td className="w-[400px] text-blue-500">{remainingItem.name}</td>
         <td>{renderUnitOrUnitsText(remainingItem.currentQuantity)}</td>
         <td>
-          <ActionButton onClick={() => handleToggleOpen(remainingItem)} />
+          <ActionButton onClick={() => openAndPopulateModal(remainingItem)} />
         </td>
       </TableRow>
     ));
@@ -47,8 +41,8 @@ export function RemainingListTable({ stocktakes }: RemainingListTableProps) {
     <Table
       title="Remaining"
       header={header}
-      isLoading={stocktakes.isLoading}
-      isEmpty={!remainingList || remainingList.length === 0}
+      isLoading={remainingItems.isLoading}
+      isEmpty={!remainingItems || remainingItems.list.length === 0}
       className="mt-12"
     >
       <TableBody>{renderTableRows()}</TableBody>

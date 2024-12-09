@@ -2,7 +2,7 @@
 import { StocktakeModel } from "../models";
 import { fetchStocktakes, updateStocktake } from "../services/";
 
-export class Stocktake {
+export class StocktakeStore {
   list: StocktakeModel[] = [];
   isLoading = false;
   error: Error | null = null;
@@ -21,16 +21,21 @@ export class Stocktake {
 
   updateStocktakeAsSkipped(data: StocktakeModel): void {
     this.isLoading = true;
-    this.performUpdate(data);
+    const body = {
+      ...data,
+      countValue: 0,
+      dateSkipped: new Date(),
+    } satisfies StocktakeModel;
+    this.performUpdate(body);
   }
 
-  updateStocktakeCount(data: StocktakeModel): void {
+  updateStocktakeItemCount(data: StocktakeModel): void {
     this.isLoading = true;
     const body = {
       ...data,
       countValue: data.countValue,
       modifiedDate: new Date(),
-    } as StocktakeModel;
+    } satisfies StocktakeModel;
     this.performUpdate(body);
   }
 
@@ -49,5 +54,5 @@ export class Stocktake {
   }
 }
 
-const stocktakesList = new Stocktake();
+const stocktakesList = new StocktakeStore();
 export { stocktakesList };

@@ -5,14 +5,14 @@ interface ModalContextData extends PropsWithChildren {
   isOpen: (type: ModalType) => boolean;
   toggleOpenClose: (type: ModalType) => void;
   data: object;
-  setData: (data: object) => void;
+  setModalData: (data: object) => void;
 }
 
 const ModalContext = createContext<ModalContextData>({} as ModalContextData);
 
 export function ModalProvider({ children }: PropsWithChildren) {
   const [openModals, setOpenModals] = useState<ModalType[]>([]);
-  const [data, setData] = useState({});
+  const [data, setModalData] = useState({});
 
   function openModal(type: ModalType) {
     setOpenModals((prev) => [...prev, type]);
@@ -35,7 +35,7 @@ export function ModalProvider({ children }: PropsWithChildren) {
   }
 
   function handleSetData(data: object) {
-    setData(data);
+    setModalData(data);
   }
 
   return (
@@ -43,7 +43,7 @@ export function ModalProvider({ children }: PropsWithChildren) {
       value={{
         isOpen,
         toggleOpenClose,
-        setData: handleSetData,
+        setModalData: handleSetData,
         data,
       }}
     >

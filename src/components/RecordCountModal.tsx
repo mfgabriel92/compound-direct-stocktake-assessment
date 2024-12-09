@@ -1,10 +1,10 @@
 ﻿import clsx from "clsx";
 import { AnimatePresence } from "framer-motion";
+import { toJS } from "mobx";
 import { useState, useEffect } from "react";
-import { useModal } from "../contexts";
+import { useModal, useStocktake } from "../contexts";
 import { ModalType } from "../enums";
 import { StocktakeModel } from "../models";
-import { stocktakesList } from "../stores";
 import { showErrorToast, showSuccessToast } from "../utils";
 import { ConfirmQuantityVarianceModal } from "./ConfirmQuantityVarianceModal.tsx";
 import { Button } from "./ui/Button";
@@ -13,7 +13,9 @@ import { Modal, ModalTitle, ModalContent, ModalFooter } from "./ui/Modal";
 
 export function RecordCountModal() {
   const { isOpen, data, toggleOpenClose } = useModal();
-  const [currentQuantity, setCurrentQty] = useState<number>(0);
+  const { countedItems, updateStocktakeAsSkipped, updateStocktakeItemCount } =
+    useStocktake();
+  const [currentQuantity, setCurrentQuantity] = useState<number>(0);
   const [countValue, setCountValue] = useState<number>(0);
   const [incrementBy, setIncrementBy] = useState<number>(1);
   const [isSkipStockableChecked, setIsStockableChecked] = useState(false);
@@ -23,25 +25,25 @@ export function RecordCountModal() {
   const isCountEqualCurrentQuantity = countValue === currentQuantity;
 
   useEffect(() => {
-    setCurrentQty(stocktake.currentQuantity);
+    setCurrentQuantity(stocktake.currentQuantity);
     setCountValue(stocktake.countValue);
   }, [stocktake.currentQuantity, stocktake.countValue]);
 
-  function handleCountClick() {
+  function countStocktake() {
     setCountValue((prev) => prev + incrementBy);
     setIncrementBy(1);
   }
 
-  function handleSaveAndNextClick() {
+  function saveAndNextStocktake() {
     if (!isCountEqualCurrentQuantity) {
       toggleOpenClose(ModalType.ConfirmQuantityVariance);
       return;
     }
 
-    updateStocktakeCount();
+    handleUpdateStocktakeItemCount();
   }
 
-  function updateStocktakeCount() {
+  function handleUpdateStocktakeItemCount() {
     const body = {
       ...stocktake,
       countValue,
@@ -49,26 +51,27 @@ export function RecordCountModal() {
       movement: countValue - currentQuantity,
       modifiedDate: new Date(),
     } as StocktakeModel;
-    stocktakesList.updateStocktakeCount(body);
 
-    if (stocktakesList.error) {
-      return showErrorToast(stocktakesList.error.message);
+    updateStocktakeItemCount(body);
+
+    if (countedItems.error) {
+      return showErrorToast(countedItems.error.message);
     }
 
     showSuccessToast(`${stocktake.name} sucessfully counted`);
   }
 
-  function handleSkipStockableClick() {
-    stocktakesList.updateStocktakeAsSkipped(stocktake);
+  function handleSkipStocktakeItem() {
+    updateStocktakeAsSkipped(toJS(stocktake));
     toggleOpenClose(ModalType.RecordCount);
   }
 
   function renderSaveOrSkipButton() {
     if (isSkipStockableChecked) {
-      return <Button onClick={handleSkipStockableClick}>Skip Stockable</Button>;
+      return <Button onClick={handleSkipStocktakeItem}>Skip Stockable</Button>;
     }
 
-    return <Button onClick={handleSaveAndNextClick}>Save & Next</Button>;
+    return <Button onClick={saveAndNextStocktake}>Save & Next</Button>;
   }
 
   return (
@@ -87,7 +90,7 @@ export function RecordCountModal() {
               <input
                 value={currentQuantity}
                 type="number"
-                onChange={(e) => setCurrentQty(Number(e.target.value))}
+                onChange={(e) => setCurrentQuantity(Number(e.target.value))}
                 className="h-[72px] w-full rounded-md border-[1px] border-gray-200/50 text-center text-4xl leading-none"
               />
               <span className="text-xs">CURRENT</span>
@@ -119,7 +122,7 @@ export function RecordCountModal() {
               <Button
                 className="w-full"
                 type="outline"
-                onClick={handleCountClick}
+                onClick={countStocktake}
               >
                 Count
               </Button>
@@ -147,7 +150,9 @@ export function RecordCountModal() {
 
       <AnimatePresence>
         {isOpen(ModalType.ConfirmQuantityVariance) && (
-          <ConfirmQuantityVarianceModal onConfirm={updateStocktakeCount} />
+          <ConfirmQuantityVarianceModal
+            onConfirm={handleUpdateStocktakeItemCount}
+          />
         )}
       </AnimatePresence>
     </>
