@@ -28,7 +28,7 @@ export function RemainingListTable() {
   function renderTableRows() {
     return remainingItemsList.map((remainingItem) => (
       <TableRow key={remainingItem.stocktakeItemId}>
-        <td className="w-[400px] text-blue-500">{remainingItem.name}</td>
+        <td className="text-blue-500">{remainingItem.name}</td>
         <td>{renderUnitOrUnitsText(remainingItem.currentQuantity)}</td>
         <td>
           <ActionButton onClick={() => openAndPopulateModal(remainingItem)} />

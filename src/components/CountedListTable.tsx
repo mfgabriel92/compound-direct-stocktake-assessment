@@ -19,7 +19,7 @@ function CountedListTable() {
   function renderTableRows() {
     return countedStocktakeItems.list.map((countedItem) => (
       <TableRow key={countedItem.stocktakeItemId}>
-        <td className="w-[400px] text-blue-500">{countedItem.name}</td>
+        <td className="text-blue-500">{countedItem.name}</td>
         <td>{renderUnitOrUnitsText(countedItem.priorQuantity)}</td>
         <td>{renderUnitOrUnitsText(countedItem.countValue)}</td>
         <td>{renderUnitOrUnitsText(countedItem.movement!)}</td>

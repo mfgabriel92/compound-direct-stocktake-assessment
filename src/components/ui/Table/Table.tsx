@@ -20,7 +20,10 @@ function Table({
 }: Props) {
   function renderTableHeader() {
     return header.map((h) => (
-      <th key={h} className="text-start font-medium text-xs">
+      <th
+        key={h}
+        className="text-start font-medium text-xs first-of-type:w-[400px]"
+      >
         {h.toUpperCase()}
       </th>
     ));
