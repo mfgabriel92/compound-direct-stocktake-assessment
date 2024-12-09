@@ -8,25 +8,25 @@ import { Table, TableRow, TableBody } from "./ui/Table";
 
 export function RemainingListTable() {
   const { toggleOpenClose, setModalData } = useModal();
-  const { remainingItems } = useStocktake();
+  const { remainingStocktakeItems } = useStocktake();
 
+  const { list: remainingItemsList, isLoading } = remainingStocktakeItems;
   const header = ["Stock Name", "Current Qty", ""];
 
   function openAndPopulateModal(item: StocktakeModel) {
     toggleOpenClose(ModalType.RecordCount);
-    setItemBeingEdited(item);
+    setStocktakeItemIndexAndModalData(item);
   }
 
-  function setItemBeingEdited(item: StocktakeModel) {
-    const itemIndex = remainingItems.list.findIndex(
+  function setStocktakeItemIndexAndModalData(item: StocktakeModel) {
+    const itemIndex = remainingItemsList.findIndex(
       (i) => i.stocktakeItemId === item.stocktakeItemId,
     );
-
-    setModalData(remainingItems.list[itemIndex]);
+    setModalData(remainingItemsList[itemIndex]);
   }
 
   function renderTableRows() {
-    return remainingItems.list.map((remainingItem) => (
+    return remainingItemsList.map((remainingItem) => (
       <TableRow key={remainingItem.stocktakeItemId}>
         <td className="w-[400px] text-blue-500">{remainingItem.name}</td>
         <td>{renderUnitOrUnitsText(remainingItem.currentQuantity)}</td>
@@ -41,8 +41,8 @@ export function RemainingListTable() {
     <Table
       title="Remaining"
       header={header}
-      isLoading={remainingItems.isLoading}
-      isEmpty={!remainingItems || remainingItems.list.length === 0}
+      isLoading={isLoading}
+      isEmpty={!remainingItemsList || remainingItemsList.length === 0}
       className="mt-12"
     >
       <TableBody>{renderTableRows()}</TableBody>

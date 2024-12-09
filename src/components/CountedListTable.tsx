@@ -5,7 +5,7 @@ import { CountedListStatusIcon } from "./CountedListStatusIcon.tsx";
 import { Table, TableRow, TableBody } from "./ui/Table";
 
 function CountedListTable() {
-  const { countedItems } = useStocktake();
+  const { countedStocktakeItems } = useStocktake();
 
   const header = [
     "stock name",
@@ -17,7 +17,7 @@ function CountedListTable() {
   ];
 
   function renderTableRows() {
-    return countedItems.list.map((countedItem) => (
+    return countedStocktakeItems.list.map((countedItem) => (
       <TableRow key={countedItem.stocktakeItemId}>
         <td className="w-[400px] text-blue-500">{countedItem.name}</td>
         <td>{renderUnitOrUnitsText(countedItem.priorQuantity)}</td>
@@ -35,8 +35,8 @@ function CountedListTable() {
     <Table
       title="Counted"
       header={header}
-      isLoading={countedItems.isLoading}
-      isEmpty={countedItems.list.length === 0}
+      isLoading={countedStocktakeItems.isLoading}
+      isEmpty={countedStocktakeItems.list.length === 0}
       className="mt-10"
     >
       <TableBody>{renderTableRows()}</TableBody>

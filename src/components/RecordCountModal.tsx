@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useModal, useStocktake } from "../contexts";
 import { ModalType } from "../enums";
 import { StocktakeModel } from "../models";
-import { showErrorToast, showSuccessToast } from "../utils";
+import { showSuccessToast, showErrorToast } from "../utils";
 import { ConfirmQuantityVarianceModal } from "./ConfirmQuantityVarianceModal.tsx";
 import { Button } from "./ui/Button";
 import { Select } from "./ui/Input";
@@ -13,39 +13,65 @@ import { Modal, ModalTitle, ModalContent, ModalFooter } from "./ui/Modal";
 
 export function RecordCountModal() {
   const { isOpen, data, toggleOpenClose } = useModal();
-  const { countedItems, updateStocktakeAsSkipped, updateStocktakeItemCount } =
-    useStocktake();
+  const [stocktakeItem, setStocktakeItem] = useState<StocktakeModel>(
+    data as StocktakeModel,
+  );
+  const {
+    remainingStocktakeItems,
+    updateStocktakeAsSkipped,
+    updateStocktakeItemCount,
+  } = useStocktake();
   const [currentQuantity, setCurrentQuantity] = useState<number>(0);
   const [countValue, setCountValue] = useState<number>(0);
   const [incrementBy, setIncrementBy] = useState<number>(1);
   const [isSkipStockableChecked, setIsStockableChecked] = useState(false);
 
   const incrementByOptions = [1, 5, 10, 100, 1000];
-  const stocktake = data as StocktakeModel;
-  const isCountEqualCurrentQuantity = countValue === currentQuantity;
+  const isCountNotEqualToCurrentQuantity = countValue !== currentQuantity;
 
   useEffect(() => {
-    setCurrentQuantity(stocktake.currentQuantity);
-    setCountValue(stocktake.countValue);
-  }, [stocktake.currentQuantity, stocktake.countValue]);
+    setStocktakeItem(data as StocktakeModel);
+  }, [data]);
+
+  useEffect(() => {
+    setCurrentQuantity(stocktakeItem.currentQuantity);
+    setCountValue(stocktakeItem.countValue);
+  }, [stocktakeItem]);
 
   function countStocktake() {
     setCountValue((prev) => prev + incrementBy);
-    setIncrementBy(1);
   }
 
-  function saveAndNextStocktake() {
-    if (!isCountEqualCurrentQuantity) {
+  function saveAndGetNextStocktake() {
+    if (isCountNotEqualToCurrentQuantity) {
       toggleOpenClose(ModalType.ConfirmQuantityVariance);
       return;
     }
 
     handleUpdateStocktakeItemCount();
+    getNextStocktakeItemToEdit();
+  }
+
+  function getNextStocktakeItemToEdit() {
+    const currentIndex = remainingStocktakeItems.list.findIndex(
+      (i) => i.stocktakeItemId === stocktakeItem.stocktakeItemId,
+    );
+    const nextStocktakeItem = toJS(
+      remainingStocktakeItems.list[currentIndex + 1],
+    );
+
+    if (nextStocktakeItem) {
+      setCountValue(0);
+      return setStocktakeItem(nextStocktakeItem);
+    }
+
+    toggleOpenClose(ModalType.RecordCount);
+    showSuccessToast("All remaining stocktake items have been counted");
   }
 
   function handleUpdateStocktakeItemCount() {
     const body = {
-      ...stocktake,
+      ...stocktakeItem,
       countValue,
       priorQuantity: currentQuantity,
       movement: countValue - currentQuantity,
@@ -54,15 +80,15 @@ export function RecordCountModal() {
 
     updateStocktakeItemCount(body);
 
-    if (countedItems.error) {
-      return showErrorToast(countedItems.error.message);
+    if (remainingStocktakeItems.error) {
+      return showErrorToast(remainingStocktakeItems.error.message);
     }
 
-    showSuccessToast(`${stocktake.name} sucessfully counted`);
+    showSuccessToast(`${stocktakeItem.name} successfully counted`);
   }
 
   function handleSkipStocktakeItem() {
-    updateStocktakeAsSkipped(toJS(stocktake));
+    updateStocktakeAsSkipped(toJS(stocktakeItem));
     toggleOpenClose(ModalType.RecordCount);
   }
 
@@ -71,7 +97,7 @@ export function RecordCountModal() {
       return <Button onClick={handleSkipStocktakeItem}>Skip Stockable</Button>;
     }
 
-    return <Button onClick={saveAndNextStocktake}>Save & Next</Button>;
+    return <Button onClick={saveAndGetNextStocktake}>Save & Next</Button>;
   }
 
   return (
@@ -83,7 +109,7 @@ export function RecordCountModal() {
 
         <ModalContent>
           <p className="w-full border-b-[1px] border-gray-200/50 pb-3">
-            {stocktake.name}
+            {stocktakeItem.name}
           </p>
           <div className="mt-4 flex w-full justify-center gap-4 text-black">
             <div className="flex flex-1 flex-col items-center gap-2">
@@ -103,8 +129,8 @@ export function RecordCountModal() {
                 className={clsx(
                   "h-[72px] w-full rounded-md border-[1px] border-gray-200/50 bg-gradient-to-b from-white text-center text-4xl leading-none",
                   {
-                    "to-orange-100/50": !isCountEqualCurrentQuantity,
-                    "to-green-100/50": isCountEqualCurrentQuantity,
+                    "to-orange-100/50": !isCountNotEqualToCurrentQuantity,
+                    "to-green-100/50": isCountNotEqualToCurrentQuantity,
                   },
                 )}
               />

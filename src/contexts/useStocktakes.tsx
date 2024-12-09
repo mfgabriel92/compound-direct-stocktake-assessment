@@ -10,8 +10,8 @@ interface Stocktake {
 }
 
 interface StocktakeContextData extends PropsWithChildren {
-  remainingItems: Stocktake;
-  countedItems: Stocktake;
+  remainingStocktakeItems: Stocktake;
+  countedStocktakeItems: Stocktake;
   updateStocktakeAsSkipped: (stocktakeItem: StocktakeModel) => void;
   updateStocktakeItemCount: (stocktakeItem: StocktakeModel) => void;
 }
@@ -25,7 +25,7 @@ export function StocktakeProvider({ children }: PropsWithChildren) {
     stocktakesList.getStocktakes();
   }, []);
 
-  function filterUncountedItems() {
+  function filterUncountedStocktakeItems() {
     return {
       list: stocktakesList.list.filter((i) => i.countValue === null),
       isLoading: stocktakesList.isLoading,
@@ -33,7 +33,7 @@ export function StocktakeProvider({ children }: PropsWithChildren) {
     } satisfies Stocktake;
   }
 
-  function filterCountedItems() {
+  function filterCountedStocktakeItems() {
     return {
       list: stocktakesList.list.filter((i) => i.countValue !== null),
       isLoading: stocktakesList.isLoading,
@@ -54,8 +54,8 @@ export function StocktakeProvider({ children }: PropsWithChildren) {
       {() => (
         <StocktakeContext.Provider
           value={{
-            remainingItems: filterUncountedItems(),
-            countedItems: filterCountedItems(),
+            remainingStocktakeItems: filterUncountedStocktakeItems(),
+            countedStocktakeItems: filterCountedStocktakeItems(),
             updateStocktakeAsSkipped,
             updateStocktakeItemCount,
           }}
