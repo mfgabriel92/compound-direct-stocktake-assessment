@@ -1,7 +1,6 @@
 ﻿import clsx from "clsx";
-import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { selectInputVariants } from "../../../variants";
+import { FloatingContainer } from "../FloatingContainer";
 import { Option } from "./Option.tsx";
 
 interface Props {
@@ -62,7 +61,7 @@ export function Select({ values, type = "text", className, onChange }: Props) {
   return (
     <div
       className={clsx(
-        "select-wrapper relative flex rounded-md border-[1px] border-gray-200/50 leading-none after:mr-4 after:mt-6 after:text-gray-200 after:content-['⌄'] has-[input:focus]:border-2 has-[input:focus]:border-blue-500",
+        "relative flex rounded-md border-[1px] border-gray-200/50 leading-none after:mr-4 after:mt-6 after:text-gray-200 after:content-['⌄'] has-[input:focus]:border-2 has-[input:focus]:border-blue-300",
         className,
       )}
     >
@@ -74,19 +73,9 @@ export function Select({ values, type = "text", className, onChange }: Props) {
         onFocus={toggleOpenClose}
         onBlur={toggleOpenClose}
       />
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            variants={selectInputVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="absolute top-[74px] z-10 flex w-full flex-col rounded-md border-[1px] border-gray-200/50 bg-white shadow-sm"
-          >
-            {renderListOfValues()}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <FloatingContainer isOpen={isOpen} className="top-[74px]">
+        {renderListOfValues()}
+      </FloatingContainer>
     </div>
   );
 }

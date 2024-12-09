@@ -7,7 +7,7 @@ interface Props extends HTMLAttributes<HTMLParagraphElement> {
 export function Option({ onClick, children }: Props) {
   return (
     <p
-      className="cursor-pointer rounded-md p-3 transition-colors hover:bg-blue-500 hover:text-white"
+      className="cursor-pointer p-3 transition-colors hover:bg-blue-300 hover:text-white"
       onClick={onClick}
     >
       {children}
