@@ -26,6 +26,7 @@ export function RecordCountModal() {
     updateStocktakeAsSkipped,
     updateStocktakeItemCount,
   } = useStocktake();
+
   const [currentQuantity, setCurrentQuantity] = useState<number>(0);
   const [countValue, setCountValue] = useState<number>(0);
   const [incrementBy, setIncrementBy] = useState<number>(1);
@@ -57,17 +58,19 @@ export function RecordCountModal() {
   }
 
   function handleUpdateStocktakeItemCount() {
-    const body = {
+    const body: StocktakeModel = {
       ...stocktakeItem,
       countValue: countValue || 0,
       priorQuantity: currentQuantity,
       movement: countValue - currentQuantity,
       modifiedDate: new Date(),
-    } as StocktakeModel;
+    };
 
     updateStocktakeItemCount(body);
+
     if (remainingStocktakeItems.error) {
-      return showErrorToast(remainingStocktakeItems.error.message);
+      showErrorToast(remainingStocktakeItems.error.message);
+      return;
     }
 
     showSuccessToast(`${stocktakeItem.name} successfully counted`);
@@ -84,17 +87,23 @@ export function RecordCountModal() {
       (i: StocktakeModel) =>
         i.stocktakeItemId === stocktakeItem.stocktakeItemId,
     );
-    const nextStocktakeItem = list[currentIndex + 1];
 
     if (!list.length) {
       toggleOpenClose(ModalType.RecordCount);
-      return showSuccessToast(
-        "All remaining stocktake items have been counted",
-      );
+      showSuccessToast("All remaining stocktake items have been counted");
+      return;
     }
 
     setCountValue(0);
-    setStocktakeItem(nextStocktakeItem || list[0]);
+    setStocktakeItem(list[currentIndex + 1] || list[0]);
+  }
+
+  function renderSaveOrSkipButton() {
+    return isSkipStockableChecked ? (
+      <Button onClick={handleSkipStocktakeItem}>Skip Stockable</Button>
+    ) : (
+      <Button onClick={saveAndGetNextStocktake}>Save & Next</Button>
+    );
   }
 
   function handleSkipStocktakeItem() {
@@ -102,19 +111,11 @@ export function RecordCountModal() {
     toggleOpenClose(ModalType.RecordCount);
   }
 
-  function renderSaveOrSkipButton() {
-    if (isSkipStockableChecked) {
-      return <Button onClick={handleSkipStocktakeItem}>Skip Stockable</Button>;
-    }
-
-    return <Button onClick={saveAndGetNextStocktake}>Save & Next</Button>;
-  }
-
   function renderItemAlreadyCountedWarning() {
     const { countValue, dateSkipped, priorQuantity } = stocktakeItem;
 
     if (!countValue) {
-      return;
+      return null;
     }
 
     if (dateSkipped) {
