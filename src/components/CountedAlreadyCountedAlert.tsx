@@ -1,69 +1,79 @@
-﻿import { HiChevronDoubleRight } from "react-icons/hi";
+﻿import { ReactNode } from "react";
+import { HiChevronDoubleRight } from "react-icons/hi";
 import { HiExclamationTriangle } from "react-icons/hi2";
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import { renderUnitOrUnitsText } from "../utils";
 import { Alert } from "./ui/Alert";
 
 interface Props {
-  priorQuantity: number;
-  countValue: number;
+  priorQuantity?: number;
+  countValue?: number;
+  variant?: "success" | "warning" | "neutral";
+  title?: string;
+  icon?: ReactNode;
 }
 
-export function SuccessAlert({ priorQuantity, countValue }: Props) {
+function StockAlert({
+  priorQuantity,
+  countValue,
+  variant,
+  title,
+  icon,
+}: Props) {
   return (
-    <Alert variant="success">
+    <Alert variant={variant!}>
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-3">
-          <IoMdCheckmarkCircle className="-mt-1" size={"21"} />
-          <strong>This stock has already been counted</strong>
+          {icon}
+          <strong>{title}</strong>
         </div>
-        <div className="flex items-center gap-3">
-          <p>
-            <strong>Prior quantity: </strong>
-            {renderUnitOrUnitsText(priorQuantity)}
-          </p>
-          <p>
-            <strong>Recorded count: </strong>
-            {renderUnitOrUnitsText(countValue)}
-          </p>
-        </div>
+        {variant !== "neutral" &&
+          priorQuantity !== undefined &&
+          countValue !== undefined && (
+            <div className="flex items-center gap-3">
+              <p>
+                <strong>Prior quantity: </strong>
+                {renderUnitOrUnitsText(priorQuantity)}
+              </p>
+              <p>
+                <strong>Recorded count: </strong>
+                {renderUnitOrUnitsText(countValue)}
+              </p>
+            </div>
+          )}
       </div>
     </Alert>
   );
 }
 
-export function WarningAlert({ priorQuantity, countValue }: Props) {
+export function SuccessAlert(props: Props) {
   return (
-    <Alert variant="warning">
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-3">
-          <HiExclamationTriangle className="-mt-1" size={"21"} />
-          <strong>
-            This stock has already been counted (Variance detected)
-          </strong>
-        </div>
-        <div className="flex items-center gap-3">
-          <p>
-            <strong>Prior quantity: </strong>
-            {renderUnitOrUnitsText(priorQuantity)}
-          </p>
-          <p>
-            <strong>Recorded count: </strong>
-            {renderUnitOrUnitsText(countValue)}
-          </p>
-        </div>
-      </div>
-    </Alert>
+    <StockAlert
+      {...props}
+      variant="success"
+      title="This stock has already been counted"
+      icon={<IoMdCheckmarkCircle className="-mt-1" size={21} />}
+    />
+  );
+}
+
+export function WarningAlert(props: Props) {
+  return (
+    <StockAlert
+      {...props}
+      variant="warning"
+      title="This stock has already been counted (Variance detected)"
+      icon={<HiExclamationTriangle className="-mt-1" size={21} />}
+    />
   );
 }
 
 export function NeutralAlert() {
   return (
-    <Alert variant="neutral">
-      <div className="flex items-center gap-3">
-        <HiChevronDoubleRight className="-mt-1" size={"18"} />
-        <strong>This stock has been skipped</strong>
-      </div>
-    </Alert>
+    <StockAlert
+      variant="neutral"
+      title="This stock has been skipped"
+      icon={<HiChevronDoubleRight className="-mt-1" size={18} />}
+    />
   );
 }

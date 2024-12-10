@@ -71,7 +71,6 @@ export function RecordCountModal() {
     }
 
     showSuccessToast(`${stocktakeItem.name} successfully counted`);
-    toggleOpenClose(ModalType.RecordCount);
     getNextRemainingStocktakeItemToCount();
   }
 
@@ -85,23 +84,17 @@ export function RecordCountModal() {
       (i: StocktakeModel) =>
         i.stocktakeItemId === stocktakeItem.stocktakeItemId,
     );
-    const isListNotEmpty = list.length > 0;
     const nextStocktakeItem = list[currentIndex + 1];
 
-    setCountValue(0);
-
-    if (isListNotEmpty) {
-      if (nextStocktakeItem) {
-        setStocktakeItem(nextStocktakeItem);
-        return;
-      } else if (list.length > 0) {
-        setStocktakeItem(list[0]);
-        return;
-      }
+    if (!list.length) {
+      toggleOpenClose(ModalType.RecordCount);
+      return showSuccessToast(
+        "All remaining stocktake items have been counted",
+      );
     }
 
-    toggleOpenClose(ModalType.RecordCount);
-    showSuccessToast("All remaining stocktake items have been counted");
+    setCountValue(0);
+    setStocktakeItem(nextStocktakeItem || list[0]);
   }
 
   function handleSkipStocktakeItem() {
@@ -118,21 +111,19 @@ export function RecordCountModal() {
   }
 
   function renderItemAlreadyCountedWarning() {
-    if (!stocktakeItem.countValue) {
+    const { countValue, dateSkipped, priorQuantity } = stocktakeItem;
+
+    if (!countValue) {
       return;
     }
 
-    const { dateSkipped, countValue, priorQuantity } = stocktakeItem;
-
     if (dateSkipped) {
       return <NeutralAlert />;
-    } else if (countValue !== priorQuantity) {
-      return (
-        <WarningAlert countValue={countValue} priorQuantity={priorQuantity} />
-      );
     }
 
-    return (
+    return countValue !== priorQuantity ? (
+      <WarningAlert countValue={countValue} priorQuantity={priorQuantity} />
+    ) : (
       <SuccessAlert countValue={countValue} priorQuantity={priorQuantity} />
     );
   }
