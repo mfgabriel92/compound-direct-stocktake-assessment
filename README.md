@@ -21,6 +21,14 @@ or
 git clone git@github.com:mfgabriel92/compound-direct-stocktake-assessment.git
 ```
 
+## Dependencies
+
+Install the dependencies. `yarn` recommended due to an error wit NPM.
+
+```
+yarn
+```
+
 ## Running
 
 Next, run the following commands in 2 separate terminal windows or tabs:
