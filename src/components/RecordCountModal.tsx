@@ -40,6 +40,19 @@ export function RecordCountModal() {
   }, [data]);
 
   useEffect(() => {
+    if (stocktakeItem.countValue) {
+      return;
+    }
+
+    const { list } = remainingStocktakeItems;
+    if (!list.length) {
+      toggleOpenClose(ModalType.RecordCount);
+      showSuccessToast("All remaining stocktake items have been counted");
+      return;
+    }
+  }, [stocktakeItem, remainingStocktakeItems.list]);
+
+  useEffect(() => {
     setCurrentQuantity(stocktakeItem.currentQuantity);
     setCountValue(stocktakeItem.countValue);
   }, [stocktakeItem]);
@@ -54,56 +67,48 @@ export function RecordCountModal() {
       return;
     }
 
-    handleUpdateStocktakeItemCount();
+    updateAndFetchNextStocktakeItem();
   }
 
-  function handleUpdateStocktakeItemCount() {
-    const body: StocktakeModel = {
-      ...stocktakeItem,
-      countValue: countValue || 0,
-      priorQuantity: currentQuantity,
-      movement: countValue - currentQuantity,
-      modifiedDate: new Date(),
-    };
+  function updateAndFetchNextStocktakeItem() {
+    try {
+      const updatedStocktakeItem: StocktakeModel = {
+        ...stocktakeItem,
+        countValue: countValue || 0,
+        priorQuantity: currentQuantity,
+        movement: countValue - currentQuantity,
+        modifiedDate: new Date(),
+      };
 
-    updateStocktakeItemCount(body);
+      updateStocktakeItemCount(updatedStocktakeItem);
 
-    if (remainingStocktakeItems.error) {
-      showErrorToast(remainingStocktakeItems.error.message);
-      return;
+      if (remainingStocktakeItems.error) {
+        showErrorToast(remainingStocktakeItems.error.message);
+      }
+
+      showSuccessToast(`${stocktakeItem.name} successfully counted`);
+      fetchNextStocktakeItem();
+    } catch (error) {
+      showErrorToast(
+        (error as Error).message || "An unexpected error occurred",
+      );
     }
-
-    showSuccessToast(`${stocktakeItem.name} successfully counted`);
-    getNextRemainingStocktakeItemToCount();
   }
 
-  function getNextRemainingStocktakeItemToCount() {
+  function fetchNextStocktakeItem() {
     if (stocktakeItem.countValue) {
+      toggleOpenClose(ModalType.RecordCount);
       return;
     }
 
     const { list } = remainingStocktakeItems;
     const currentIndex = list.findIndex(
-      (i: StocktakeModel) =>
-        i.stocktakeItemId === stocktakeItem.stocktakeItemId,
+      (item: StocktakeModel) =>
+        item.stocktakeItemId === stocktakeItem.stocktakeItemId,
     );
-
-    if (!list.length) {
-      toggleOpenClose(ModalType.RecordCount);
-      showSuccessToast("All remaining stocktake items have been counted");
-      return;
-    }
 
     setCountValue(0);
     setStocktakeItem(list[currentIndex + 1] || list[0]);
-  }
-
-  function renderSaveOrSkipButton() {
-    return isSkipStockableChecked ? (
-      <Button onClick={handleSkipStocktakeItem}>Skip Stockable</Button>
-    ) : (
-      <Button onClick={saveAndGetNextStocktake}>Save & Next</Button>
-    );
   }
 
   function handleSkipStocktakeItem() {
@@ -126,6 +131,20 @@ export function RecordCountModal() {
       <WarningAlert countValue={countValue} priorQuantity={priorQuantity} />
     ) : (
       <SuccessAlert countValue={countValue} priorQuantity={priorQuantity} />
+    );
+  }
+
+  function renderSaveOrSkipButton() {
+    return isSkipStockableChecked ? (
+      <Button onClick={handleSkipStocktakeItem}>Skip Stockable</Button>
+    ) : (
+      <Button onClick={saveAndGetNextStocktake}>
+        {stocktakeItem.countValue ? (
+          <span>Save</span>
+        ) : (
+          <span>Save & Next</span>
+        )}
+      </Button>
     );
   }
 
@@ -207,7 +226,7 @@ export function RecordCountModal() {
       <AnimatePresence>
         {isOpen(ModalType.ConfirmQuantityVariance) && (
           <ConfirmQuantityVarianceModal
-            onConfirm={handleUpdateStocktakeItemCount}
+            onConfirm={updateAndFetchNextStocktakeItem}
           />
         )}
       </AnimatePresence>
