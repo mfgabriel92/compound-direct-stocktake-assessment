@@ -23,7 +23,7 @@ git clone git@github.com:mfgabriel92/compound-direct-stocktake-assessment.git
 
 ## Dependencies
 
-Install the dependencies. `yarn` recommended due to an error wit NPM.
+Install the dependencies. `yarn` is recommended due to an error with NPM.
 
 ```
 npm i -g yarn
