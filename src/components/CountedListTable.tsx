@@ -1,15 +1,17 @@
 ﻿import { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
-import { useStocktake } from "../contexts";
+import { useStocktake, useModal } from "../contexts";
+import { ModalType } from "../enums";
+import { StocktakeModel } from "../models";
 import { renderUnitOrUnitsText } from "../utils";
 import { CountedListStatusIcon } from "./CountedListStatusIcon.tsx";
 import { FloatingContainer } from "./ui/FloatingContainer";
 import { Option } from "./ui/Input";
 import { Table, TableRow, TableBody } from "./ui/Table";
 
-function CountedListTable() {
+export function CountedListTable() {
   const { countedStocktakeItems } = useStocktake();
-  const [isMoreOptionsMenuOpen, setIsMoreOptionsMenuOpen] = useState(false);
+  const { toggleOpenClose, setModalData } = useModal();
 
   const header = [
     "stock name",
@@ -20,29 +22,9 @@ function CountedListTable() {
     "",
   ];
 
-  function toggleMoreOptionsMenuOpenClose() {
-    setIsMoreOptionsMenuOpen(!isMoreOptionsMenuOpen);
-  }
-
-  function openCountStocktakeModal() {
-    toggleMoreOptionsMenuOpenClose();
-  }
-
-  function renderOptionsButton() {
-    return (
-      <>
-        <HiDotsVertical
-          className="text-xs! h-full cursor-pointer rounded-md py-3 transition-colors hover:bg-blue-300 hover:text-white"
-          onClick={toggleMoreOptionsMenuOpenClose}
-        />
-        <FloatingContainer
-          isOpen={isMoreOptionsMenuOpen}
-          className="right-[3px] top-[30px] [&>p]:whitespace-nowrap [&>p]:pl-6 [&>p]:pr-14"
-        >
-          <Option onClick={openCountStocktakeModal}>Redo Stocktake</Option>
-        </FloatingContainer>
-      </>
-    );
+  function openAndPopulateModal(item: StocktakeModel) {
+    toggleOpenClose(ModalType.RecordCount);
+    setModalData(item);
   }
 
   function renderTableRows() {
@@ -52,9 +34,9 @@ function CountedListTable() {
         <td>{renderUnitOrUnitsText(countedItem.priorQuantity)}</td>
         <td>{renderUnitOrUnitsText(countedItem.countValue)}</td>
         <td>{renderUnitOrUnitsText(countedItem.movement!)}</td>
-        <td>{<CountedListStatusIcon record={countedItem} />}</td>
+        <td>{<CountedListStatusIcon stocktakeItem={countedItem} />}</td>
         <td className="relative flex h-11 items-center justify-end">
-          {renderOptionsButton()}
+          <ActionButton onClick={() => openAndPopulateModal(countedItem)} />
         </td>
       </TableRow>
     ));
@@ -73,4 +55,30 @@ function CountedListTable() {
   );
 }
 
-export { CountedListTable };
+function ActionButton({ onClick }: { onClick: () => void }) {
+  const [isMoreOptionsMenuOpen, setIsMoreOptionsMenuOpen] = useState(false);
+
+  function toggleMoreOptionsMenuOpenClose() {
+    setIsMoreOptionsMenuOpen(!isMoreOptionsMenuOpen);
+  }
+
+  function handleOptionClick() {
+    onClick();
+    toggleMoreOptionsMenuOpenClose();
+  }
+
+  return (
+    <>
+      <HiDotsVertical
+        className="text-xs! h-full cursor-pointer rounded-md py-3 transition-colors hover:bg-blue-300 hover:text-white"
+        onClick={toggleMoreOptionsMenuOpenClose}
+      />
+      <FloatingContainer
+        isOpen={isMoreOptionsMenuOpen}
+        className="right-[3px] top-[30px] [&>p]:whitespace-nowrap [&>p]:pl-6 [&>p]:pr-14"
+      >
+        <Option onClick={handleOptionClick}>Redo Stocktake</Option>
+      </FloatingContainer>
+    </>
+  );
+}

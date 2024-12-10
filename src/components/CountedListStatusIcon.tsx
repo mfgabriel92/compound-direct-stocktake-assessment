@@ -4,11 +4,15 @@ import { HiExclamationTriangle } from "react-icons/hi2";
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import { StocktakeModel } from "../models";
 
-export function CountedListStatusIcon({ record }: { record: StocktakeModel }) {
+export function CountedListStatusIcon({
+  stocktakeItem,
+}: {
+  stocktakeItem: StocktakeModel;
+}) {
   let icon;
   let status;
 
-  const { priorQuantity, countValue, dateSkipped } = record;
+  const { priorQuantity, countValue, dateSkipped } = stocktakeItem;
 
   if (dateSkipped) {
     icon = <HiChevronDoubleRight className="-mt-1" />;

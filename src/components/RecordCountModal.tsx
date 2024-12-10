@@ -7,6 +7,11 @@ import { ModalType } from "../enums";
 import { StocktakeModel } from "../models";
 import { showSuccessToast, showErrorToast } from "../utils";
 import { ConfirmQuantityVarianceModal } from "./ConfirmQuantityVarianceModal.tsx";
+import {
+  NeutralAlert,
+  WarningAlert,
+  SuccessAlert,
+} from "./CountedAlreadyCountedAlert.tsx";
 import { Button } from "./ui/Button";
 import { Select } from "./ui/Input";
 import { Modal, ModalTitle, ModalContent, ModalFooter } from "./ui/Modal";
@@ -66,10 +71,15 @@ export function RecordCountModal() {
     }
 
     showSuccessToast(`${stocktakeItem.name} successfully counted`);
-    getNextStocktakeItemToEdit();
+    toggleOpenClose(ModalType.RecordCount);
+    getNextRemainingStocktakeItemToCount();
   }
 
-  function getNextStocktakeItemToEdit() {
+  function getNextRemainingStocktakeItemToCount() {
+    if (stocktakeItem.countValue) {
+      return;
+    }
+
     const { list } = remainingStocktakeItems;
     const currentIndex = list.findIndex(
       (i: StocktakeModel) =>
@@ -107,6 +117,26 @@ export function RecordCountModal() {
     return <Button onClick={saveAndGetNextStocktake}>Save & Next</Button>;
   }
 
+  function renderItemAlreadyCountedWarning() {
+    if (!stocktakeItem.countValue) {
+      return;
+    }
+
+    const { dateSkipped, countValue, priorQuantity } = stocktakeItem;
+
+    if (dateSkipped) {
+      return <NeutralAlert />;
+    } else if (countValue !== priorQuantity) {
+      return (
+        <WarningAlert countValue={countValue} priorQuantity={priorQuantity} />
+      );
+    }
+
+    return (
+      <SuccessAlert countValue={countValue} priorQuantity={priorQuantity} />
+    );
+  }
+
   return (
     <>
       <Modal>
@@ -115,6 +145,7 @@ export function RecordCountModal() {
         </ModalTitle>
 
         <ModalContent>
+          {renderItemAlreadyCountedWarning()}
           <p className="w-full border-b-[1px] border-gray-200/50 pb-3">
             {stocktakeItem.name}
           </p>
