@@ -31,6 +31,7 @@ export function RecordCountModal() {
   const [countValue, setCountValue] = useState<number>(0);
   const [incrementBy, setIncrementBy] = useState<number>(1);
   const [isSkipStockableChecked, setIsStockableChecked] = useState(false);
+  const [currentStocktakeIndex, setCurrentStocktakeIndex] = useState(0);
 
   const incrementByOptions = [1, 5, 10, 100, 1000];
   const isCountNotEqualToCurrentQuantity = countValue !== currentQuantity;
@@ -43,19 +44,31 @@ export function RecordCountModal() {
     if (stocktakeItem.countValue) {
       return;
     }
-
-    const { list } = remainingStocktakeItems;
-    if (!list.length) {
-      toggleOpenClose(ModalType.RecordCount);
-      showSuccessToast("All remaining stocktake items have been counted");
-      return;
-    }
+    checkIfHasNextItemAndClose();
+    setCurrentIndexBeingEdited();
   }, [stocktakeItem, remainingStocktakeItems.list]);
 
   useEffect(() => {
     setCurrentQuantity(stocktakeItem.currentQuantity);
     setCountValue(stocktakeItem.countValue);
   }, [stocktakeItem]);
+
+  function checkIfHasNextItemAndClose() {
+    const { list } = remainingStocktakeItems;
+    if (!list.length) {
+      toggleOpenClose(ModalType.RecordCount);
+      showSuccessToast("All remaining stocktake items have been counted");
+      return;
+    }
+  }
+
+  function setCurrentIndexBeingEdited() {
+    const currentIndex = remainingStocktakeItems.list.findIndex(
+      (item: StocktakeModel) =>
+        item.stocktakeItemId === stocktakeItem.stocktakeItemId,
+    );
+    setCurrentStocktakeIndex(currentIndex);
+  }
 
   function countStocktake() {
     setCountValue((prev) => prev + incrementBy);
@@ -134,6 +147,20 @@ export function RecordCountModal() {
     );
   }
 
+  function renderNextStocktakeItemNameIfAny() {
+    const { list } = remainingStocktakeItems;
+    const nextIndex = currentStocktakeIndex + 1;
+    const nextStocktakeItemName = list[nextIndex]?.name;
+
+    return nextStocktakeItemName ? (
+      <>
+        <strong>Next:</strong> {nextStocktakeItemName}
+      </>
+    ) : (
+      <strong>Last stocktake item</strong>
+    );
+  }
+
   function renderSaveOrSkipButton() {
     return isSkipStockableChecked ? (
       <Button onClick={handleSkipStocktakeItem}>Skip Stockable</Button>
@@ -205,7 +232,7 @@ export function RecordCountModal() {
           </div>
 
           <div className="mt-8 self-start text-sm text-gray-500/70">
-            <strong>Next:</strong> Blue/White Neo Capsule
+            {renderNextStocktakeItemNameIfAny()}
           </div>
         </ModalContent>
 
